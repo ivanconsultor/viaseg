@@ -13,7 +13,7 @@
 
     /* Neutras */
     --bg-color: #FFFFFF;
-    --bg-alt: #EAF2FD;
+    --bg-alt: #F4F7FE;
     /* Cinza super claro com toque de azul */
     --text-color: #363455;
     --text-light: #6A6A8C;
@@ -275,7 +275,8 @@ img {
    ========================================================================== */
 .hero {
     padding: 180px 2rem 100px;
-    background-color: #EAF2FD; /* HEX real extraído da imagem famia-feliz.jpg */
+    background-color: var(--bg-alt);
+    /* Light background */
     position: relative;
     overflow: hidden;
 }
@@ -367,30 +368,29 @@ img {
 .shape-yellow {
     width: 600px;
     height: 600px;
-    border: 32px solid #E6FA5C;
-    top: -150px;
-    right: -300px; /* Movido para bem longe do texto */
+    border: 24px solid #E6FA5C;
+    top: -50px;
+    right: -150px;
     border-radius: 50%;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .shape-green {
-    width: 500px;
-    height: 500px;
+    width: 450px;
+    height: 450px;
     border: 32px solid #14F4A2;
-    bottom: -280px; /* Movido para baixo */
-    left: -180px;  /* Movido para a esquerda, longe das letras */
+    bottom: -150px;
+    left: -115px;
     border-radius: 50%;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .hero-image-wrapper {
     position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    z-index: 2;
-    /* Removido a sombra para fusão perfeita de cor com o fundo */
-    animation: floating 6s ease-in-out infinite;
+    z-index: 3;
+    width: 125%;
+    max-width: 600px;
+    transform: translateX(-10%);
 }
 
 .hero-main-image {
@@ -597,9 +597,8 @@ img {
 
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
 }
 
 .service-card {
@@ -612,8 +611,6 @@ img {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 340px;
 }
 
 .service-card:hover {
@@ -663,11 +660,10 @@ img {
 }
 
 .card-image-box i {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
     color: var(--primary-color);
-    opacity: 0.8;
-    stroke-width: 1.5;
+    opacity: 0.5;
 }
 
 .card-body {
