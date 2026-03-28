@@ -836,6 +836,12 @@ footer {
     color: white;
 }
 
+.social-links a .social-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
 .social-links a:hover {
     background-color: var(--primary-color);
     transform: translateY(-3px);
