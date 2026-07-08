@@ -5,26 +5,30 @@ import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ShieldCheck, ArrowRight, Building, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 
 export default function Parceiros() {
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
+  } as const;
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <Header lightText={true} />
+      <Header />
 
       {/* Hero Section Parceiros */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+      <section className="relative min-h-[500px] md:min-h-[600px] flex items-center pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
+          <Image 
             src="/images/casal-feliz.webp" 
             alt="Família feliz" 
-            className="w-full h-full object-cover object-center"
+            fill
+            priority
+            quality={90}
+            className="object-cover object-top brightness-95 contrast-[1.03] saturate-[1.10]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/30 dark:from-[#0b0c10] dark:via-[#0b0c10]/80 dark:to-[#0b0c10]/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent dark:from-[#0b0c10] dark:via-[#0b0c10]/80 dark:to-transparent"></div>
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6">

@@ -5,12 +5,13 @@ import Link from "next/link";
 import { ArrowRight, ShieldCheck, Heart } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Image from "next/image";
 
 export default function SeguroEmpresarial() {
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
+  } as const;
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
@@ -19,10 +20,13 @@ export default function SeguroEmpresarial() {
       {/* Hero Emotivo */}
       <section className="relative pt-40 pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+          <Image 
+            src="/images/seguro-empresarial.webp" 
             alt="Equipe trabalhando em harmonia" 
-            className="w-full h-full object-cover object-center"
+            fill
+            priority
+            quality={90}
+            className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
         </div>

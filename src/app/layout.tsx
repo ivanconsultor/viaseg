@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/ui/CookieConsent";
+import ScrollToTop from "@/components/ScrollToTop";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -57,12 +58,16 @@ export default function RootLayout({
     },
     "telephone": "+5521976844444",
     "sameAs": [
-      "https://www.facebook.com/corretoraviaseg"
+      "https://www.facebook.com/corretoraviaseg",
+      "https://www.instagram.com/corretoraviaseg/",
+      "https://www.linkedin.com/company/corretoraviaseg/?viewAsMember=true",
+      "https://x.com/corretoraviaseg",
+      "https://www.reddit.com/user/ViaSeg/"
     ]
   };
 
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang="pt-BR">
       <head>
         <script
           type="application/ld+json"
@@ -70,6 +75,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${montserrat.variable} antialiased bg-background text-foreground selection:bg-primary/20 selection:text-primary`}>
+        <ScrollToTop />
         {children}
         <CookieConsent />
       </body>

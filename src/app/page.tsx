@@ -97,7 +97,7 @@ export default function Home() {
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
+  } as const;
 
   const staggerContainer = {
     hidden: { opacity: 0 },
@@ -114,7 +114,7 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+      <section className="relative min-h-[500px] md:min-h-[600px] flex items-center pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
           <Image 
@@ -123,9 +123,9 @@ export default function Home() {
             fill
             priority
             quality={90}
-            className="object-cover object-center"
+            className="object-cover object-top brightness-95 contrast-[1.03] saturate-[1.10]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent dark:from-[#0b0c10] dark:via-[#0b0c10]/80 dark:to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent dark:from-[#0b0c10] dark:via-[#0b0c10]/80 dark:to-transparent"></div>
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6">

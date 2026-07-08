@@ -66,9 +66,9 @@ export default function Footer() {
               <li><Link href="/sobre" className="text-gray-400 hover:text-primary transition-colors text-sm">Sobre a ViaSeg</Link></li>
               <li><Link href="/#parceiros" className="text-gray-400 hover:text-primary transition-colors text-sm">Nossos Parceiros</Link></li>
               <li><Link href="/fale-conosco" className="text-gray-400 hover:text-primary transition-colors text-sm">Fale Conosco</Link></li>
-              <li><Link href="/privacidade" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors text-sm">Política de Privacidade</Link></li>
-              <li><Link href="/termos" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors text-sm">Termos de Uso</Link></li>
-              <li><Link href="/cookies" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors text-sm">Política de Cookies</Link></li>
+              <li><Link href="/privacidade" className="text-gray-400 hover:text-primary transition-colors text-sm">Política de Privacidade</Link></li>
+              <li><Link href="/termos" className="text-gray-400 hover:text-primary transition-colors text-sm">Termos de Uso</Link></li>
+              <li><Link href="/cookies" className="text-gray-400 hover:text-primary transition-colors text-sm">Política de Cookies</Link></li>
             </ul>
           </div>
 
@@ -98,7 +98,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-center">
           <p className="text-gray-500 text-sm text-center">
-            &copy; {new Date().getFullYear()} ViaSeg Corretora de Seguros. Todos os direitos reservados.
+            &copy; 2005 ViaSeg Corretora de Seguros. Todos os direitos reservados.
           </p>
         </div>
       </div>

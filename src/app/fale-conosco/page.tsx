@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { Send, MapPin, Phone, Mail, Clock } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SafeShadowBoundary from "@/components/SafeShadowBoundary";
 
 export default function FaleConosco() {
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
+  } as const;
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,60 +49,62 @@ export default function FaleConosco() {
               className="bg-white dark:bg-[#1A1A2E] p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-white/10"
             >
               <h2 className="text-2xl font-bold mb-6 text-foreground">Envie uma mensagem</h2>
-              <form onSubmit={handleFormSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="nome" className="text-sm font-medium text-foreground/80">Nome Completo</label>
-                  <input 
-                    type="text" 
-                    id="nome" 
-                    placeholder="Como gostaria de ser chamado?" 
-                    required 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <SafeShadowBoundary>
+                <form onSubmit={handleFormSubmit} className="space-y-6">
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-foreground/80">E-mail</label>
+                    <label htmlFor="nome" className="text-sm font-medium text-foreground/80">Nome Completo</label>
                     <input 
-                      type="email" 
-                      id="email" 
-                      placeholder="seu@email.com" 
+                      type="text" 
+                      id="nome" 
+                      placeholder="Como gostaria de ser chamado?" 
                       required 
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="whatsapp" className="text-sm font-medium text-foreground/80">WhatsApp</label>
-                    <input 
-                      type="tel" 
-                      id="whatsapp" 
-                      placeholder="(00) 00000-0000" 
-                      required 
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                    />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium text-foreground/80">E-mail</label>
+                      <input 
+                        type="email" 
+                        id="email" 
+                        placeholder="seu@email.com" 
+                        required 
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="whatsapp" className="text-sm font-medium text-foreground/80">WhatsApp</label>
+                      <input 
+                        type="tel" 
+                        id="whatsapp" 
+                        placeholder="(00) 00000-0000" 
+                        required 
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="assunto" className="text-sm font-medium text-foreground/80">Descrição do Assunto</label>
-                  <textarea 
-                    id="assunto" 
-                    rows={4} 
-                    placeholder="Digite sua dúvida ou solicitação aqui..." 
-                    required 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none"
-                  ></textarea>
-                </div>
+                  <div className="space-y-2">
+                    <label htmlFor="assunto" className="text-sm font-medium text-foreground/80">Descrição do Assunto</label>
+                    <textarea 
+                      id="assunto" 
+                      rows={4} 
+                      placeholder="Digite sua dúvida ou solicitação aqui..." 
+                      required 
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none"
+                    ></textarea>
+                  </div>
 
-                <button 
-                  type="submit" 
-                  className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl transition-all hover:-translate-y-1 shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)]"
-                >
-                  <Send size={20} />
-                  Enviar Mensagem
-                </button>
-              </form>
+                  <button 
+                    type="submit" 
+                    className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl transition-all hover:-translate-y-1 shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)]"
+                  >
+                    <Send size={20} />
+                    Enviar Mensagem
+                  </button>
+                </form>
+              </SafeShadowBoundary>
             </motion.div>
 
             {/* Informações de Contato */}
