@@ -1,42 +1,69 @@
-# Guia Passo a Passo: Deploy da ViaSeg Corretora na Hostinger
+# Guia de Deploy Simples: Publicando o site da ViaSeg na Hostinger
 
-Este guia ensina como realizar o deploy do site **ViaSeg Corretora** (feito em Next.js) na hospedagem da Hostinger.
+Este é um guia passo a passo voltado para iniciantes. Vamos publicar o site da ViaSeg na Hostinger da maneira mais simples e barata possível: **exportando o site como HTML estático**. 
 
-## 1. Preparação no GitHub
-O seu projeto já está salvo no GitHub. Certifique-se de que todas as alterações recentes (incluindo as de SEO) foram commitadas e feito o `git push` para a branch `main`.
+Esse método funciona em qualquer plano comum da Hostinger (Hospedagem Compartilhada) e não exige servidores VPS ou comandos Linux complexos.
 
-## 2. Configurando a Hostinger
-Se você contratou uma hospedagem com painel cPanel ou hPanel (Hospedagem de Sites comum) que suporta **Node.js**:
+---
 
-1. Acesse o **hPanel** da Hostinger.
-2. Navegue até o seu domínio (ex: `viasegcorretora.com.br`).
-3. Vá em **Avançado** > **Node.js**.
-4. Se o painel não tiver a opção Node.js, você precisará exportar o site como estático. (O Next.js permite exportação estática).
+## Passo 1: Preparar o Next.js para Exportação Estática
 
-### Alternativa A: Exportação Estática (Para hospedagens comuns HTML/PHP)
-Como o nosso site é institucional e rápido, podemos exportá-lo como um site HTML puro.
-1. No seu arquivo `next.config.ts`, adicione `output: 'export'`.
-2. Rode no seu computador: `npm run build`.
-3. O Next.js criará uma pasta chamada `out/`.
-4. Compacte todo o conteúdo da pasta `out/` em um arquivo `.zip`.
-5. Vá ao **Gerenciador de Arquivos** da Hostinger.
-6. Acesse a pasta `public_html`.
-7. Faça o upload do arquivo `.zip` e extraia. O site estará no ar instantaneamente!
+O Next.js precisa saber que vamos gerar arquivos HTML puros para a Hostinger. 
 
-### Alternativa B: Hostinger VPS (Para rodar o Servidor Next.js Node.js completo)
-1. Acesse seu servidor via SSH.
-2. Instale Node.js e Git.
-3. Clone o repositório: `git clone https://github.com/SeuUsuario/viaseg-premium.git`.
-4. Entre na pasta: `cd viaseg-premium`.
-5. Instale as dependências: `npm install`.
-6. Gere a build: `npm run build`.
-7. Inicie com PM2 (gerenciador de processos): `npx pm2 start npm --name "viaseg" -- start`.
-8. Configure o Nginx para redirecionar o tráfego da porta 80 para a porta 3000 (onde roda o Next.js).
+1. Abra o arquivo `next.config.ts` (na raiz do projeto).
+2. Adicione as configurações de `output: 'export'` e `unoptimized: true` conforme o exemplo abaixo:
 
-## 3. Configurando Domínio e SSL
-1. No painel da Hostinger, vá em **SSL**.
-2. Clique em **Instalar SSL Gratuito**. O processo é automático e leva cerca de 5 minutos.
-3. Certifique-se de que a opção **"Forçar HTTPS"** está ativada, o Google exige isso (parte das diretrizes E-E-A-T de SEO aplicadas no projeto).
+```typescript
+import type { NextConfig } from "next";
 
-## Conclusão
-Pronto! Seu site agora está online, super rápido (com as otimizações de Core Web Vitals) e pronto para receber tráfego e clientes.
+const nextConfig: NextConfig = {
+  output: 'export', // Indica que o Next.js deve gerar HTML/CSS estáticos
+  images: {
+    unoptimized: true, // Necessário para gerar imagens em HTML estático sem servidor Node.js
+  },
+  // ... outras configurações se existirem ...
+};
+
+export default nextConfig;
+```
+
+---
+
+## Passo 2: Gerar os Arquivos do Site
+
+Com o arquivo configurado, vamos compilar o site:
+
+1. No terminal do seu computador, execute o comando:
+   ```bash
+   npm run build
+   ```
+2. Aguarde a finalização da compilação.
+3. Quando o build terminar, você verá que o Next.js criou uma pasta nova chamada **`out`** na raiz do seu projeto.
+4. **Compacte (adicione para o formato ZIP)** todo o conteúdo interno da pasta **`out`** (certifique-se de compactar os arquivos de dentro dela, e não a pasta `out` em si). Nomeie o arquivo como `site.zip`.
+
+---
+
+## Passo 3: Subir o Site para a Hostinger (Painel hPanel)
+
+1. Acesse a sua conta da **Hostinger** e entre no **hPanel** do seu domínio.
+2. Vá em **Arquivos** e abra o **Gerenciador de Arquivos**.
+3. Acesse a pasta do seu site chamada **`public_html`**.
+4. Se houver algum arquivo padrão da Hostinger lá dentro (como um `default.php` ou `index.php` de boas-vindas), exclua-o para evitar conflitos.
+5. Faça o upload do arquivo `site.zip` para dentro de `public_html`.
+6. Clique com o botão direito no arquivo `site.zip` dentro do gerenciador e selecione **Extrair** (ou Descompactar).
+7. Todos os arquivos do site aparecerão dentro de `public_html`.
+
+---
+
+## Passo 4: Ativar o SSL (HTTPS) Obrigatório
+
+O Google exige segurança para indexar sites. Na Hostinger:
+
+1. No painel hPanel, busque por **SSL**.
+2. Clique em **Instalar SSL** e selecione o seu domínio. O processo é automático e gratuito.
+3. Ative a opção **"Forçar HTTPS"** para garantir que qualquer pessoa que tente acessar caia no link seguro.
+
+---
+
+## Pronto! 🎉
+O seu site da ViaSeg Corretora está no ar, ultra rápido, livre de travamentos e indexado perfeitamente no Google!
