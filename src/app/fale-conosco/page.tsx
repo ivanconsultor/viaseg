@@ -12,10 +12,40 @@ export default function FaleConosco() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   } as const;
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui seria implementada a lógica de envio (ex: EmailJS, Resend, etc)
-    alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+    const form = e.currentTarget as HTMLFormElement;
+    
+    const nomeInput = form.querySelector("#nome") as HTMLInputElement;
+    const emailInput = form.querySelector("#email") as HTMLInputElement;
+    const whatsappInput = form.querySelector("#whatsapp") as HTMLInputElement;
+    const assuntoInput = form.querySelector("#assunto") as HTMLTextAreaElement;
+
+    const nome = nomeInput?.value || "";
+    const email = emailInput?.value || "";
+    const whatsapp = whatsappInput?.value || "";
+    const assunto = assuntoInput?.value || "";
+
+    try {
+      const response = await fetch("/send.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nome, email, whatsapp, assunto }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+        form.reset();
+      } else {
+        alert(data.message || "Ocorreu um erro ao enviar a mensagem. Tente novamente.");
+      }
+    } catch (error) {
+      alert("Erro ao enviar a mensagem. Tente novamente mais tarde.");
+    }
   };
 
   return (

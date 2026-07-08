@@ -1,86 +1,34 @@
-# Guia Prático: Como Ativar o Envio de E-mails no Formulário de Contato
+# Guia Prático: Formulário de Contato Direto via E-mail da Hostinger
 
-Como o site será hospedado de forma estática (HTML puro) na Hostinger, você não tem um servidor de banco de dados ativo para processar e-mails. 
-
-A melhor maneira, mais segura e gratuita (até 50 e-mails por mês na conta grátis) de fazer as mensagens do site chegarem direto no seu e-mail (`contato@viasegcorretora.com.br`) é usando o serviço **Formspree**.
-
-Aqui está o passo a passo de 5 minutos para ativar:
+Para que o site envie as mensagens diretamente para o seu e-mail (`contato@viasegcorretora.com.br`) utilizando os servidores da própria Hostinger (sem depender de serviços de terceiros), criei e configurei a integração nativa via PHP.
 
 ---
 
-## Passo 1: Criar a sua conta no Formspree
+## Como a Integração Funciona?
 
-1. Acesse o site [https://formspree.io](https://formspree.io) e clique em **Register** (Registrar).
-2. Crie uma conta usando o e-mail onde você deseja receber as mensagens (ex: `contato@viasegcorretora.com.br`).
-3. Confirme a sua conta no e-mail de ativação que o Formspree enviará.
-
----
-
-## Passo 2: Criar o Formulário no Painel do Formspree
-
-1. No painel do Formspree, clique em **New Form** (Novo Formulário).
-2. Dê um nome para ele (ex: *Contato ViaSeg*).
-3. No campo **Send emails to**, confirme se está selecionado o seu e-mail (`contato@viasegcorretora.com.br`).
-4. Clique em **Create Form**.
-5. O Formspree gerará uma URL especial de envio. Ela se parece com isso:
-   `https://formspree.io/f/xknwzypq` (copie essa URL).
+1. **`public/send.php` (Servidor):** Criei um script PHP seguro que roda nos servidores Apache/LiteSpeed da Hostinger. Ele recebe os dados de contato do site, limpa contra invasões e faz o disparo do e-mail usando a infraestrutura interna da Hostinger.
+2. **`fale-conosco/page.tsx` (Frontend):** O formulário agora faz uma requisição assíncrona (`fetch`) apontando para `/send.php`. Como o site e o script rodam no mesmo domínio, o processo é instantâneo e invisível para o usuário.
 
 ---
 
-## Passo 3: Configurar a URL no código do seu site
+## O que Você Precisa Fazer?
 
-Para que os dados digitados sejam enviados ao Formspree, altere a URL no arquivo `fale-conosco/page.tsx`:
+Absolutamente nada no código. Já deixei tudo configurado e programado para você!
 
-1. Abra o arquivo `src/app/fale-conosco/page.tsx`.
-2. Localize a função `handleFormSubmit` nas linhas 14-18:
-   ```typescript
-   const handleFormSubmit = (e: React.FormEvent) => {
-     e.preventDefault();
-     // Aqui seria implementada a lógica de envio
-     alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
-   };
+### Passo Único: Compilar e Enviar o Site
+1. No seu terminal local, rode:
+   ```bash
+   npm run build
    ```
-3. Substitua a função inteira pelo código de envio real abaixo, inserindo a **sua URL do Formspree** criada no Passo 2:
-
-   ```typescript
-   const handleFormSubmit = async (e: React.FormEvent) => {
-     e.preventDefault();
-
-     // Coleta os valores digitados nos inputs
-     const nome = (document.getElementById("nome") as HTMLInputElement).value;
-     const email = (document.getElementById("email") as HTMLInputElement).value;
-     const whatsapp = (document.getElementById("whatsapp") as HTMLInputElement).value;
-     const assunto = (document.getElementById("assunto") as HTMLTextAreaElement).value;
-
-     try {
-       const response = await fetch("COLE_AQUI_A_SUA_URL_DO_FORMSPREE", {
-         method: "POST",
-         headers: {
-           "Accept": "application/json",
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify({ nome, email, whatsapp, assunto }),
-       });
-
-       if (response.ok) {
-         alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
-         // Limpa o formulário após enviar
-         (e.target as HTMLFormElement).reset();
-       } else {
-         alert("Ocorreu um erro ao enviar a mensagem. Tente novamente.");
-       }
-     } catch (error) {
-       alert("Erro de conexão. Verifique sua internet e tente novamente.");
-     }
-   };
-   ```
+2. Compacte o conteúdo gerado dentro da pasta **`out`** (que inclui as páginas em HTML e o script `send.php` gerado automaticamente).
+3. Suba o ZIP na pasta **`public_html`** do gerenciador de arquivos da Hostinger e descompacte.
 
 ---
 
-## Passo 4: Fazer o Upload ou Push no GitHub
+## Detalhes Importantes (Ajustes Finais de E-mail)
 
-1. Salve o arquivo.
-2. Faça o build (`npm run build`) para atualizar a pasta `out/`.
-3. Suba para o GitHub e atualize os arquivos na Hostinger.
-
-Pronto! Agora qualquer mensagem enviada no formulário chegará automaticamente estruturada no seu e-mail!
+- **E-mail de Destino:** O script está configurado para entregar as mensagens em `contato@viasegcorretora.com.br`. 
+- **Caixa de Entrada / Spam:** No primeiro envio de teste pelo site, caso o e-mail demore a aparecer, verifique a pasta de **Spam/Lixo Eletrônico** do seu e-mail. Para evitar que caia no Spam:
+  - Adicione o remetente `no-reply@viasegcorretora.com.br` aos seus contatos confiáveis.
+  - Se desejar alterar o e-mail de recebimento no futuro, basta abrir o arquivo `public/send.php` e alterar a linha 32:
+    `$to = "seu-email@dominio.com";`
