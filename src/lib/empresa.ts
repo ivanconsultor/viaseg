@@ -8,7 +8,18 @@
 export const EMPRESA = {
   nome: "ViaSeg Corretora de Seguros",
   cnpj: "", // vazio: atuacao como corretor pessoa fisica
-  susep: "65956F",
+
+  /**
+   * >>> PREENCHER ANTES DE PUBLICAR <<<
+   * Registro SUSEP do corretor (pessoa fisica). Enquanto estiver vazio, o
+   * rodape e as paginas legais simplesmente nao exibem o registro.
+   *
+   * ATENCAO: 65956F NAO e a SUSEP. Aquele numero, que aparece nos links de
+   * cotacao da Porto Seguro, e o codigo interno do corretor na Porto Seguro.
+   * Publicar codigo de seguradora como se fosse registro SUSEP e informacao
+   * incorreta perante o regulador.
+   */
+  susep: "",
   atuaDesde: "2005",
   endereco: "Rua Dr Othon Machado, 150 - Sala 406, Inhaúma, Rio de Janeiro/RJ",
   telefone: "(21) 97684-4444",

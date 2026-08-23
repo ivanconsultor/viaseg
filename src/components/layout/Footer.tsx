@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ShieldCheck, MapPin, Phone, Mail } from "lucide-react";
+import { EMPRESA } from "@/lib/empresa";
 
 export default function Footer() {
   return (
@@ -98,7 +99,12 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-center">
           <p className="text-gray-500 text-sm text-center">
-            &copy; 2005&ndash;2026 ViaSeg Corretora de Seguros. Todos os direitos reservados.<br />Corretor de seguros registrado na SUSEP sob o n&ordm; 65956F &mdash; atuando desde 2005.
+            &copy; 2005&ndash;2026 {EMPRESA.nome}. Todos os direitos reservados.
+            {EMPRESA.susep ? (
+              <><br />Corretor de seguros registrado na SUSEP sob o n&ordm; {EMPRESA.susep} &mdash; atuando desde {EMPRESA.atuaDesde}.</>
+            ) : (
+              <><br />Corretor de seguros atuando desde {EMPRESA.atuaDesde}.</>
+            )}
           </p>
         </div>
       </div>

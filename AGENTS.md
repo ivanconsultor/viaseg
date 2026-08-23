@@ -68,6 +68,8 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 
 ## 📋 5. Identificação obrigatória
 
-- Ivan atua como **corretor pessoa física**: a identificação oficial é o registro **SUSEP 65956F**, não CNPJ.
+- Ivan atua como **corretor pessoa física**: a identificação oficial é o **registro SUSEP**, não CNPJ.
+- ⚠️ **`65956F` não é a SUSEP.** Esse número, presente nos links de cotação, é o código interno do corretor na Porto Seguro. Nunca publicá-lo como registro SUSEP.
+- Enquanto `EMPRESA.susep` estiver vazio, rodapé e páginas legais omitem o registro automaticamente.
 - Dados oficiais ficam centralizados em `src/lib/empresa.ts`. Rodapé e páginas legais leem de lá — não repetir esses dados soltos pelo código.
 - `ATUALIZADO_EM` é a data da **última mudança real do texto legal**. Não usar o ano de fundação nesse campo: as políticas citam LGPD, GA4 e Meta Pixel, então uma data antiga se contradiz sozinha. O tempo de atuação aparece em `EMPRESA.atuaDesde` e no rodapé.

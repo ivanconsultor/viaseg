@@ -29,8 +29,9 @@ export default function Privacidade() {
 
             <h2 className={h2}>1. Quem é o controlador</h2>
             <p>
-              <strong>{EMPRESA.nome}</strong>, corretor de seguros registrado na SUSEP sob o
-              nº {EMPRESA.susep}, atuando desde {EMPRESA.atuaDesde}
+              <strong>{EMPRESA.nome}</strong>, corretor de seguros
+              {EMPRESA.susep ? <> registrado na SUSEP sob o nº {EMPRESA.susep},</> : null} atuando
+              desde {EMPRESA.atuaDesde}
               {EMPRESA.cnpj ? <> (CNPJ {EMPRESA.cnpj})</> : null}.<br />
               Endereço: {EMPRESA.endereco}.<br />
               Contato do Encarregado de Proteção de Dados: <strong>{EMPRESA.email}</strong>.

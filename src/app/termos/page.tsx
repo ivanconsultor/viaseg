@@ -23,8 +23,9 @@ export default function Termos() {
 
             <p>
               Estes termos valem para o uso do site {EMPRESA.site}, mantido pela{" "}
-              <strong>{EMPRESA.nome}</strong>, corretor de seguros registrado na SUSEP sob o
-              nº {EMPRESA.susep}, atuando no mercado desde {EMPRESA.atuaDesde}
+              <strong>{EMPRESA.nome}</strong>, corretor de seguros
+              {EMPRESA.susep ? <> registrado na SUSEP sob o nº {EMPRESA.susep},</> : null} atuando
+              no mercado desde {EMPRESA.atuaDesde}
               {EMPRESA.cnpj ? <> (CNPJ {EMPRESA.cnpj})</> : null}.
             </p>
 
