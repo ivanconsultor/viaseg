@@ -10,10 +10,20 @@ export default function CookieConsent() {
 
   useEffect(() => {
     const consent = localStorage.getItem("viaseg_cookie_consent");
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if (!consent) {
-      const timer = setTimeout(() => setShow(true), 1500);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setShow(true), 1500);
     }
+
+    // Permite reabrir o banner de qualquer lugar do site (ex.: link "Gerenciar
+    // cookies"). A LGPD exige que revogar o consentimento seja tao facil quanto
+    // concede-lo - sem isto, quem escolhia uma vez ficava preso a escolha.
+    const reabrir = () => setShow(true);
+    window.addEventListener("viaseg:gerenciar-cookies", reabrir);
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener("viaseg:gerenciar-cookies", reabrir);
+    };
   }, []);
 
   /**
@@ -73,7 +83,7 @@ export default function CookieConsent() {
                     Nós valorizamos sua privacidade
                   </h3>
                   <p className="text-slate-600 text-sm leading-relaxed max-w-3xl font-normal">
-                    Utilizamos cookies para melhorar sua experiência de navegação, personalizar conteúdos e anúncios, além de analisar nosso tráfego. Ao clicar em "Aceitar todos", você concorda com o armazenamento de cookies em seu dispositivo. Leia nossa{" "}
+                    Utilizamos cookies para melhorar sua experiência de navegação, personalizar conteúdos e anúncios, além de analisar nosso tráfego. Ao clicar em &ldquo;Aceitar todos&rdquo;, você concorda com o armazenamento de cookies em seu dispositivo. Leia nossa{" "}
                     <Link href="/cookies" className="text-[#FF6B00] hover:underline font-semibold">
                       Política de Cookies
                     </Link>{" "}
