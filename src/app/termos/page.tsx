@@ -13,8 +13,11 @@ export default function Termos() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-8 text-foreground">Termos de Uso</h1>
           
-          <div className="prose prose-lg dark:prose-invert max-w-none space-y-6 text-foreground/80">
-            <p><strong>Última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}</p>
+          <div className="prose prose-lg max-w-none space-y-6 text-foreground/80">
+            {/* Data FIXA de propósito: mudar somente quando o texto da política mudar de verdade.
+                Usar new Date() aqui fazia a página exibir a data de hoje todo dia, dando a
+                impressão falsa de que a política é reescrita diariamente. */}
+            <p><strong>Última atualização:</strong> 22/08/2026</p>
             
             <p>Bem-vindo ao site da <strong>ViaSeg Corretora de Seguros</strong>. Ao acessar e utilizar o nosso site, você concorda com os presentes Termos de Uso. Leia-os atentamente antes de prosseguir com qualquer simulação ou cotação.</p>
             

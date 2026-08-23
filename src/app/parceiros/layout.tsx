@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/parceiros" },
   title: "Nossos Parceiros",
   description: "Trabalhamos em conjunto com as maiores e mais sólidas seguradoras do mercado brasileiro e internacional para garantir a melhor cobertura.",
 };

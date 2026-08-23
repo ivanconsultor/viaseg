@@ -7,7 +7,6 @@ import {
   ShieldCheck, 
   HeartHandshake, 
   Clock, 
-  ThumbsUp, 
   CheckCircle2, 
   ArrowRight,
   MapPin,
@@ -17,11 +16,11 @@ import {
 import Image from "next/image";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ParceirosSection from "@/components/sections/ParceirosSection";
 
 const TiltCard = ({ imageSrc, alt, title, desc, linkHref }: { imageSrc: string, alt: string, title: string, desc: string, linkHref: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   
-  // Parallax calculations
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -84,7 +83,7 @@ const TiltCard = ({ imageSrc, alt, title, desc, linkHref }: { imageSrc: string, 
         <h3 className="font-heading text-3xl font-bold text-white mb-3">{title}</h3>
         <p className="text-white/80 mb-6 max-w-md">{desc}</p>
         <div className="pointer-events-auto">
-          <Link href={linkHref} className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-white transition-colors">
+          <Link href={linkHref} className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-[#FF6B00] hover:text-white transition-colors">
             Conhecer Produtos <ArrowRight size={18} />
           </Link>
         </div>
@@ -110,83 +109,89 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-background flex flex-col">
+    <main className="min-h-screen bg-slate-50 text-[#1A1A2E] flex flex-col">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative min-h-[500px] md:min-h-[600px] flex items-center pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
-        {/* Background Image & Overlay */}
+      {/* Hero: foto de fundo integrada a pagina (formato original).
+          Ajustes: foto deslocada para a direita e vEu branco mais leve,
+          para a imagem aparecer mais viva sem prejudicar a leitura do texto. */}
+      <section className="relative flex items-center pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-white min-h-[min(70vw,880px)]">
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="/images/casal-feliz.webp" 
-            alt="Família feliz" 
+          <Image
+            src="/images/casal-feliz.webp"
+            alt="Família feliz protegida pelos seguros da ViaSeg"
             fill
             priority
-            quality={90}
-            className="object-cover object-top brightness-95 contrast-[1.03] saturate-[1.10]"
+            quality={95}
+            sizes="100vw"
+            className="object-cover object-[60%_20%] md:object-[35%_22%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent dark:from-[#0b0c10] dark:via-[#0b0c10]/80 dark:to-transparent"></div>
+          {/* Veu branco do lado esquerdo: da contraste ao texto sem apagar a foto */}
+          <div className="absolute inset-0 w-full md:w-6/12 bg-gradient-to-r from-white via-white/90 to-transparent md:from-white/95 md:via-white/70"></div>
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6">
-          <div className="max-w-2xl">
+          <div className="max-w-xl md:max-w-2xl">
             <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 border border-primary/20">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FF6B00]/10 text-[#FF6B00] font-semibold text-sm mb-6 border border-[#FF6B00]/20 shadow-sm">
                 <ShieldCheck size={16} />
                 <span>Sua proteção em primeiro lugar</span>
               </div>
             </motion.div>
 
-            <motion.h1 
-              className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-foreground"
+            <motion.h1
+              className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-[#1A1A2E]"
               initial="hidden" animate="visible" variants={fadeUp}
             >
-              Cote com uma das <span className="text-primary">maiores corretoras</span> do Brasil
+              Cote com uma das <span className="text-[#FF6B00]">maiores corretoras</span> do Brasil
             </motion.h1>
 
-            <motion.p 
-              className="text-lg md:text-xl text-foreground/70 mb-10 leading-relaxed"
+            <motion.p
+              className="text-lg md:text-xl text-slate-700 mb-10 leading-relaxed font-normal"
               initial="hidden" animate="visible" variants={fadeUp}
             >
               Atendimento especializado, preço justo e proteção real para você e sua família. Descomplique seu seguro hoje mesmo.
             </motion.p>
 
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-4"
               initial="hidden" animate="visible" variants={fadeUp}
             >
-              <Link 
-                href="/cotacao" 
-                className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-medium text-lg transition-all shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:-translate-y-0.5 text-center flex items-center justify-center gap-2"
+              <Link
+                href="/cotacao"
+                className="bg-[#FF6B00] hover:bg-[#e05e00] text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:-translate-y-0.5 text-center flex items-center justify-center gap-2"
               >
                 Fazer cotação grátis
                 <ArrowRight size={20} />
               </Link>
-              <a 
-                href="#contato" 
-                className="bg-white hover:bg-gray-50 text-foreground border border-gray-200 dark:bg-transparent dark:border-gray-800 dark:hover:bg-white/5 px-8 py-4 rounded-xl font-medium text-lg transition-all text-center"
+              <Link
+                href="/fale-conosco"
+                className="bg-white hover:bg-slate-50 text-[#1A1A2E] border border-slate-200 px-8 py-4 rounded-xl font-bold text-lg transition-all text-center shadow-sm"
               >
                 Falar com especialista
-              </a>
+              </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
+      {/* Faixa de Seguradoras Parceiras sem Molduras/Bordas */}
+      <ParceirosSection />
+
       {/* Diferenciais Section */}
-      <section className="py-20 bg-secondary/50" id="diferenciais">
+      <section className="py-20 bg-slate-100/60" id="diferenciais">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div 
             className="text-center max-w-3xl mx-auto mb-16"
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
           >
-            <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">Por que escolher a ViaSeg?</h2>
-            <p className="text-foreground/70 text-lg">Nós transformamos a complexidade dos seguros em tranquilidade para o seu dia a dia.</p>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-4">Por que escolher a ViaSeg?</h2>
+            <p className="text-slate-600 text-lg">Trabalhamos para garantir que você tenha a melhor experiência e a máxima segurança.</p>
           </motion.div>
 
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}
           >
             {[
               { icon: <HeartHandshake />, title: "Atendimento Especializado", desc: "Consultores prontos para ajudar a escolher o melhor seguro para você." },
@@ -196,13 +201,13 @@ export default function Home() {
             ].map((item, i) => (
               <motion.div 
                 key={i} variants={fadeUp}
-                className="bg-card p-8 rounded-2xl shadow-sm border border-border/50 hover:shadow-md hover:border-primary/20 transition-all hover:-translate-y-1"
+                className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md hover:border-[#FF6B00]/30 transition-all hover:-translate-y-1"
               >
-                <div className="w-14 h-14 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-6">
+                <div className="w-14 h-14 bg-[#FF6B00]/10 text-[#FF6B00] rounded-xl flex items-center justify-center mb-6">
                   {item.icon}
                 </div>
-                <h3 className="font-heading font-semibold text-xl mb-3">{item.title}</h3>
-                <p className="text-foreground/70 leading-relaxed">{item.desc}</p>
+                <h3 className="font-heading font-bold text-xl text-[#1A1A2E] mb-3">{item.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -210,15 +215,15 @@ export default function Home() {
       </section>
 
       {/* Tipos de Seguro */}
-      <section className="py-24" id="seguros">
+      <section className="py-24 bg-white" id="seguros">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <motion.div 
               className="max-w-2xl"
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
             >
-              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">Soluções completas para todos os momentos</h2>
-              <p className="text-foreground/70 text-lg">Temos o seguro ideal para proteger seu patrimônio, sua saúde e o seu futuro.</p>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-4">Soluções completas para todos os momentos</h2>
+              <p className="text-slate-600 text-lg">Temos o seguro ideal para proteger seu patrimônio, sua saúde e o seu futuro.</p>
             </motion.div>
           </div>
 
@@ -248,52 +253,49 @@ export default function Home() {
 
       {/* Trust Section */}
       <section className="py-24 bg-[#1A1A2E] text-white overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-        
         <div className="container relative z-10 mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-              <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6 leading-tight">Uma corretora que entende você.</h2>
-              <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+              <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6 leading-tight text-white">Uma corretora que entende você.</h2>
+              <p className="text-slate-300 text-lg mb-8 leading-relaxed">
                 Nossa missão é mais do que vender seguros, é entregar tranquilidade. Com milhares de clientes satisfeitos em todo o Brasil, a ViaSeg construiu uma reputação baseada na confiança e na transparência.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-primary">
+                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#FF6B00]">
                     <MapPin />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl">+1.800</h4>
-                    <p className="text-gray-400 text-sm">Cidades Atendidas</p>
+                    <h4 className="font-bold text-xl text-white">+1.800</h4>
+                    <p className="text-slate-400 text-sm">Cidades Atendidas</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-primary">
+                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#FF6B00]">
                     <Users />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl">+270 Mil</h4>
-                    <p className="text-gray-400 text-sm">Clientes Segurados</p>
+                    <h4 className="font-bold text-xl text-white">+270 Mil</h4>
+                    <p className="text-slate-400 text-sm">Clientes Segurados</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-primary">
+                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#FF6B00]">
                     <ShieldCheck />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl">+50</h4>
-                    <p className="text-gray-400 text-sm">Seguradoras Parceiras</p>
+                    <h4 className="font-bold text-xl text-white">+50</h4>
+                    <p className="text-slate-400 text-sm">Seguradoras Parceiras</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-primary">
+                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#FF6B00]">
                     <BadgeDollarSign />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl">Preço Justo</h4>
-                    <p className="text-gray-400 text-sm">Que cabe no seu bolso</p>
+                    <h4 className="font-bold text-xl text-white">Preço Justo</h4>
+                    <p className="text-slate-400 text-sm">Que cabe no seu bolso</p>
                   </div>
                 </div>
               </div>
@@ -313,14 +315,14 @@ export default function Home() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-24 relative overflow-hidden bg-white dark:bg-[#0b0c10]">
+      <section className="py-24 relative overflow-hidden bg-white">
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center max-w-4xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">Pronto para proteger o que é seu?</h2>
-            <p className="text-xl text-foreground/70 mb-10">Não deixe para amanhã a segurança que você e sua família merecem hoje. Faça uma cotação rápida e sem compromisso.</p>
+            <h2 className="font-heading text-4xl md:text-5xl font-bold text-[#1A1A2E] mb-6">Pronto para proteger o que é seu?</h2>
+            <p className="text-xl text-slate-600 mb-10">Não deixe para amanhã a segurança que você e sua família merecem hoje. Faça uma cotação rápida e sem compromisso.</p>
             <Link 
               href="/cotacao" 
-              className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:-translate-y-1"
+              className="inline-flex items-center justify-center bg-[#FF6B00] hover:bg-[#e05e00] text-white px-10 py-5 rounded-xl font-bold text-xl transition-all shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:-translate-y-1"
             >
               Fazer Cotação Grátis
             </Link>

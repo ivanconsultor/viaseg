@@ -1,57 +1,29 @@
 import type { NextConfig } from "next";
 
-const cspHeader = `
-    default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: https://images.unsplash.com;
-    font-src 'self' data: https://fonts.gstatic.com;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    upgrade-insecure-requests;
-`
-
+/**
+ * ATENCAO - cabecalhos de seguranca
+ *
+ * Este projeto usa output: 'export' (site estatico para a Hostinger).
+ * Nesse modo o Next.js IGNORA a funcao headers() daqui - ela so funciona
+ * quando existe um servidor Node rodando, o que nao e o caso na hospedagem
+ * compartilhada.
+ *
+ * CSP, HSTS, X-Frame-Options e os demais cabecalhos estao declarados em
+ * public/.htaccess, que e o arquivo que o Apache/LiteSpeed da Hostinger le.
+ * Nao recoloque headers() aqui: gera falsa sensacao de seguranca.
+ */
 const nextConfig: NextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
+    // Precisa declarar as qualidades usadas nos componentes <Image quality={...} />
+    qualities: [75, 90, 95],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
     ],
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: cspHeader.replace(/\n/g, ''),
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
-          },
-        ],
-      },
-    ];
   },
 };
 

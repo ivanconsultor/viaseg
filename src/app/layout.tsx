@@ -3,6 +3,8 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/ui/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
+import ConsentMode from "@/components/ConsentMode";
+import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/GoogleTagManager";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -14,6 +16,11 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  // Endereco oficial do site. Sem isto o Next nao consegue montar URLs absolutas
+  // e nenhuma pagina declara qual e a sua versao canonica - o que, somado ao
+  // dominio respondendo com e sem www, deixava o Google escolher sozinho.
+  metadataBase: new URL("https://www.viasegcorretora.com.br"),
+  alternates: { canonical: "/" },
   title: {
     template: "%s | ViaSeg Corretora",
     default: "ViaSeg Corretora | Seguros Modernos e Confiáveis",
@@ -69,12 +76,16 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        {/* Ordem obrigatoria: consentimento primeiro, GTM depois */}
+        <ConsentMode />
+        <GoogleTagManagerHead />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className={`${inter.variable} ${montserrat.variable} antialiased bg-background text-foreground selection:bg-primary/20 selection:text-primary`}>
+        <GoogleTagManagerBody />
         <ScrollToTop />
         {children}
         <CookieConsent />

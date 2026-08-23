@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ViaSeg Corretora — site institucional
 
-## Getting Started
+Site da ViaSeg Corretora de Seguros. Next.js exportado como site estático e
+publicado em hospedagem compartilhada Hostinger.
 
-First, run the development server:
+Domínio: https://www.viasegcorretora.com.br
+
+## Documentação
+
+| Arquivo | Para quê |
+|---|---|
+| [PRD.md](PRD.md) | o que o site precisa entregar |
+| [SPEC.md](SPEC.md) | como foi construído |
+| [AGENTS.md](AGENTS.md) | regras de design, cores e processo de publicação |
+| [docs/Guia_Hostinger_Deploy.md](docs/Guia_Hostinger_Deploy.md) | passo a passo para publicar |
+| [docs/Guia_Formulario_Contato.md](docs/Guia_Formulario_Contato.md) | como o formulário envia e-mail |
+| [docs/SEO.md](docs/SEO.md) | plano de SEO técnico |
+| [docs/referencias_design.md](docs/referencias_design.md) | referências visuais |
+
+## Rodar no computador
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre em http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Gerar o site para publicar
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+Gera a pasta `out/` com o site pronto. O conteúdo **de dentro** dessa pasta é o
+que vai para `public_html` na Hostinger.
 
-To learn more about Next.js, take a look at the following resources:
+Confira sempre que `out/.htaccess` e `out/send.php` foram gerados — sem eles as
+URLs quebram e o formulário para de funcionar.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Avisos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `.env.production` guarda a senha do FTP. Nunca versionar. Já está no `.gitignore`.
+- `out/`, `node_modules/` e arquivos `.zip` não vão para o Git — são gerados.

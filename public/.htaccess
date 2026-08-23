@@ -1,0 +1,77 @@
+# ViaSeg Corretora - configuracao do Apache/LiteSpeed na Hostinger
+# Este arquivo e copiado para out/ durante o build e vai para public_html.
+
+RewriteEngine On
+
+# 1. Forcar HTTPS (SSL)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2. Forcar www (endereco oficial do site)
+#    Sem isto o site responde em viasegcorretora.com.br E em www.viasegcorretora.com.br
+#    com o mesmo conteudo. Para o Google isso e conteudo duplicado: ele divide a
+#    autoridade entre os dois enderecos e nenhum posiciona bem.
+#    O sitemap, o JSON-LD e os metadados usam www, entao www e o oficial.
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTP_HOST} !^$
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [L,R=301]
+
+# 3. URLs amigaveis do Next.js estatico (ex: /cotacao -> /cotacao.html)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# 4. Pagina 404 personalizada
+ErrorDocument 404 /404.html
+
+# 5. Cabecalhos de seguranca
+#    IMPORTANTE: no modo de exportacao estatica (output: 'export') o Next.js
+#    ignora a funcao headers() do next.config.ts. Estes cabecalhos so existem
+#    porque estao declarados aqui.
+<IfModule mod_headers.c>
+    # --- CSP: SITE SEM RASTREAMENTO (DESATIVADA) ---------------------------
+    # Guardada para emergencia: se algum dia o rastreamento sair do site,
+    # reative esta e comente a de baixo. Ela e mais restritiva.
+    #Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://images.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+    # --- CSP: SITE COM RASTREAMENTO (ATIVA) --------------------------------
+    # Esta e a regra em vigor. Ela libera os dominios de medicao. Sem ela,
+    # GTM, GA4, Google Ads, Pixel e Stape sao BLOQUEADOS em silencio: nao
+    # aparece erro nenhum na tela, simplesmente nao registra nada.
+    #
+    # Contas configuradas:
+    #   GTM        GTM-K8MXPGMJ
+    #   GA4        G-WWDS8CMG8P
+    #   Google Ads AW-17845467917
+    #   Stape      server.viasegcorretora.com.br
+    #
+    # Dominios liberados e por que:
+    #   server.viasegcorretora.com.br   contorno Stape (server-side GTM)
+    #   www.googletagmanager.com        script do GTM e do GA4
+    #   www.google-analytics.com        envio de dados do GA4
+    #   analytics.google.com            envio de dados do GA4 (rota nova)
+    #   www.googleadservices.com        conversoes do Google Ads
+    #   googleads.g.doubleclick.net     remarketing do Google Ads
+    #   td.doubleclick.net              medicao do Google Ads
+    #   www.google.com / .com.br        pixel de conversao do Google Ads
+    #   connect.facebook.net            Pixel do Facebook
+    #   www.facebook.com                imagem de fallback do Pixel
+    #
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://images.unsplash.com https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://td.doubleclick.net https://www.google.com https://www.google.com.br https://www.facebook.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://server.viasegcorretora.com.br https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://td.doubleclick.net https://connect.facebook.net; frame-src https://www.googletagmanager.com https://td.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+</IfModule>
+
+# 6. Bloquear acesso a arquivos sensiveis
+<FilesMatch "^\.(env|git|htaccess)|\.(env|log|bak|sql|zip)$">
+    Require all denied
+</FilesMatch>
+
+# 7. Cache de arquivos estaticos
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/seguros/auto" },
   title: "Seguro Auto",
   description: "Proteção completa para o seu veículo. Coberturas contra roubo, furto, colisão, terceiros e assistência 24h. Cote seu seguro auto online.",
 };
