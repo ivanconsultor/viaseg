@@ -89,7 +89,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-400">
                 <Mail size={18} className="text-primary shrink-0" />
-                <a href="mailto:contato@viasegcorretora.com.br" className="hover:text-primary transition-colors">
+                <a href="mailto:contato@viasegcorretora.com.br" className="hover:text-primary transition-colors break-all">
                   contato@viasegcorretora.com.br
                 </a>
               </li>
