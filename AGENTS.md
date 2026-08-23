@@ -39,7 +39,13 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 ### Consentimento antes de qualquer tag
 - Ordem obrigatória no `<head>`: `<ConsentMode />` primeiro, `<GoogleTagManagerHead />` depois. O Consent Mode nega tudo por padrão; o `CookieConsent` libera quando o visitante aceita.
 - Contas configuradas estão em `src/lib/rastreamento.ts`. As tags (GA4, Ads, Pixel) vivem dentro do contêiner GTM, não no código.
-- Ao adicionar qualquer domínio de rastreamento novo, **liberar na CSP do `.htaccess`** — senão é bloqueado em silêncio, sem erro visível.
+- Ao adicionar qualquer domínio de rastreamento novo, **liberar na CSP do `.htaccess`** — senão é bloqueado em silêncio, sem erro visível. Preferir curinga (`*.doubleclick.net`) a domínio por domínio: liberar um a um já obrigou duas rodadas de correção.
+
+### Contêiner do servidor (Stape)
+- O contêiner web **não fala direto com o Google**: `transport_url` manda tudo para `server.viasegcorretora.com.br`. Se faltar a tag de reencaminho no servidor, o dado morre lá — foi o que deixou o Analytics **sete meses sem receber nada**, sem aviso nenhum.
+- Depois de qualquer mudança no contêiner servidor ou no `transport_url`, **conferir o Tempo real do Analytics**. É o único jeito de ver o buraco.
+- Os dois acionadores do servidor são o mesmo filtro invertido (`^(Pageview|Lead)`): Analytics recebe o que não é da Meta, Meta recebe o que é dela. Mexer num sem mexer no outro cria evento duplicado ou perdido.
+- **Pixel ativo: `526511238923127`.** O `4860127807422598` teve a instalação automática removida em 23/08/2026. Navegador e servidor precisam usar **o mesmo** pixel, senão a deduplicação por `{{Event ID}}` para de funcionar.
 
 ### Formulário
 - `public/send.php` é o único endpoint. Remove quebras de linha dos campos (injeção de cabeçalho de e-mail), valida o e-mail, restringe origem, limita envios por IP e tem campo-armadilha.

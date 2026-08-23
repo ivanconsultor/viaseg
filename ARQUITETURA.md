@@ -176,10 +176,13 @@ flowchart TD
 
 | Ferramenta | Identificador |
 |---|---|
-| Google Tag Manager | `GTM-K8MXPGMJ` (contêiner "Web ViaSeg") |
+| GTM web | `GTM-K8MXPGMJ` (contêiner "Web ViaSeg") |
+| GTM servidor | `GTM-KW5B6Z6P`, hospedado na Stape |
+| Tag do Google (invólucro) | `GT-KFHLR5QW` — distribui para o GA4 e o Ads |
 | Google Analytics 4 | `G-WWDS8CMG8P` |
 | Google Ads | `AW-17845467917` |
-| Meta Pixel | `4860127807422598` ("Pixel GTM - API") |
+| Meta Pixel **ativo** | `526511238923127` ("Pixel ViaSeg") |
+| Meta Pixel desativado | `4860127807422598` ("Pixel GTM - API") — instalação automática removida em 23/08/2026; o pixel foi mantido na Meta para preservar o histórico |
 | Conta de anúncios Meta | `3110020279309352` (ViaSeg Corretora) |
 | Business Manager Meta | `248050633309906` |
 | Servidor Stape | `server.viasegcorretora.com.br` |
@@ -213,6 +216,30 @@ visitante — irregular perante a LGPD.
 
 O visitante pode mudar de ideia depois pelo botão em `/cookies`, que reabre o
 aviso.
+
+### O contêiner do servidor
+
+O contêiner web **não fala direto com o Google**: a tag do Google carrega o
+parâmetro `transport_url` apontando para `server.viasegcorretora.com.br`, e
+tudo passa por lá. Quem recebe é o cliente `GA4`; quem reencaminha são as tags.
+
+| Item | Função |
+|---|---|
+| Cliente `GA4` | porta de entrada do servidor |
+| Acionador `Google Analytics` | `Cliente Name` contém GA4 **e** `Event Name` **não** casa `^(Pageview\|Lead)` |
+| Tag `GA4` | reencaminha ao Google Analytics `G-WWDS8CMG8P` |
+| Acionador `GA4` | `Cliente Name` contém GA4 **e** `Event Name` casa `^(Pageview\|Lead)` |
+| Tag `FB API` | envia à API de Conversões da Meta, pixel `526511238923127` |
+
+Os dois acionadores são o mesmo filtro invertido: cada destino recebe só o que
+é dele. Sem isso, `scroll`, `click` e `user_engagement` do Analytics vão parar
+na Meta, que não os entende.
+
+> **A tag `GA4` do servidor não existia até 23/08/2026.** Os dados saíam do
+> navegador, chegavam no servidor e morriam ali — o Google Analytics ficou
+> **sete meses sem receber nada**, de janeiro a agosto de 2026, sem nenhum
+> aviso em tela. Ao mexer no `transport_url` ou no contêiner servidor, sempre
+> conferir o Tempo real do Analytics depois.
 
 ### Onde mexer em cada coisa
 
@@ -263,10 +290,10 @@ Para funcionar, o dominio precisa de:
 |---|---|
 | Caixa `contato@viasegcorretora.com.br` criada | ok |
 | Caixa `no-reply@viasegcorretora.com.br` criada | ok — sem ela a Hostinger recusa o envio |
-| MX apontando para a Hostinger | ok (`mx2.hostinger.com`) |
+| MX apontando para a Hostinger | ok (`5 mx1` e `10 mx2`.hostinger.com) |
 | SPF autorizando a Hostinger | ok (`include:_spf.mail.hostinger.com`) |
 | DMARC | presente, em modo observacao (`p=none`) |
-| DKIM | **ausente** — ver Pendencias |
+| DKIM | ok — CNAME `hostingermail-a/-b/-c._domainkey` no Cloudflare. Atencao: a Hostinger usa **letras**, nao numeros |
 
 Envio real testado e confirmado no dominio em **23/08/2026**.
 
@@ -337,9 +364,7 @@ flowchart LR
 
 | Item | Onde |
 |---|---|
-| Liberar `pagead2.googlesyndication.com` e `capi-automation.s3.us-east-2.amazonaws.com` na CSP | `public/.htaccess` — hoje bloqueiam conversoes do Google Ads e a API de Conversoes da Meta |
-| Publicar os 3 CNAME de DKIM da Hostinger | Cloudflare — sem eles o e-mail do dominio tem mais chance de cair no spam |
-| Acrescentar `mx1.hostinger.com` como MX secundario | Cloudflare — hoje so existe o `mx2`, sem redundancia |
+| Marcar as verificacoes de consentimento nas 4 tags `FB API` | contêiner GTM web — hoje o evento sai para a Meta pelo servidor mesmo sem o visitante aceitar os cookies |
 | Adicionar propriedade **com www** no Search Console e enviar o sitemap | painel do Google |
 | Conferir origem dos eventos do Pixel disparados fora do site | Gerenciador de Eventos da Meta |
 | Preencher credenciais da Hostinger em `.env.production` | para usar o envio automático |
