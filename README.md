@@ -3,12 +3,17 @@
 Site da ViaSeg Corretora de Seguros. Next.js exportado como site estático e
 publicado em hospedagem compartilhada Hostinger.
 
-Domínio: https://www.viasegcorretora.com.br
+- Endereço oficial: **https://www.viasegcorretora.com.br** (sem www redireciona)
+- Corretor registrado na SUSEP sob o nº **201096702**, atuando desde 2005
+
+**Comece pelo [ARQUITETURA.md](ARQUITETURA.md)** se você é novo no projeto: ele
+tem o mapa geral, os identificadores de rastreamento e as armadilhas conhecidas.
 
 ## Documentação
 
 | Arquivo | Para quê |
 |---|---|
+| [ARQUITETURA.md](ARQUITETURA.md) | **mapa completo** — do código ao rastreamento em produção |
 | [PRD.md](PRD.md) | o que o site precisa entregar |
 | [SPEC.md](SPEC.md) | como foi construído |
 | [AGENTS.md](AGENTS.md) | regras de design, cores e processo de publicação |
