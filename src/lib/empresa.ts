@@ -10,16 +10,12 @@ export const EMPRESA = {
   cnpj: "", // vazio: atuacao como corretor pessoa fisica
 
   /**
-   * >>> PREENCHER ANTES DE PUBLICAR <<<
-   * Registro SUSEP do corretor (pessoa fisica). Enquanto estiver vazio, o
-   * rodape e as paginas legais simplesmente nao exibem o registro.
+   * Registro SUSEP do corretor (pessoa fisica), informado pelo Ivan.
    *
-   * ATENCAO: 65956F NAO e a SUSEP. Aquele numero, que aparece nos links de
-   * cotacao da Porto Seguro, e o codigo interno do corretor na Porto Seguro.
-   * Publicar codigo de seguradora como se fosse registro SUSEP e informacao
-   * incorreta perante o regulador.
+   * NAO CONFUNDIR com 65956F: aquele numero, presente nos links de cotacao,
+   * e o codigo interno do corretor na Porto Seguro, nao o registro SUSEP.
    */
-  susep: "",
+  susep: "201096702",
   atuaDesde: "2005",
   endereco: "Rua Dr Othon Machado, 150 - Sala 406, Inhaúma, Rio de Janeiro/RJ",
   telefone: "(21) 97684-4444",
