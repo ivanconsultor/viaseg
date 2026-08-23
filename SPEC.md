@@ -96,7 +96,12 @@ Escrito para rodar em PHP antigo: sem arrow functions e com alternativa ao
 
 > Não é testável localmente: o servidor de desenvolvimento do Next.js não
 > executa PHP, e `mail()` depende de um servidor de e-mail configurado. O teste
-> só acontece na Hostinger.
+> só acontece na Hostinger. Verificado em produção em **23/08/2026**.
+
+O `mail()` da Hostinger entrega pela fila local do servidor e **não usa senha** —
+nenhuma credencial de caixa entra no projeto. Mas exige que as duas caixas
+existam de verdade no hPanel: `contato@` (destino) e `no-reply@` (remetente).
+Remetente que não é caixa real faz a Hostinger recusar o envio.
 
 ## 6. Consentimento e rastreamento
 

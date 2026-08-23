@@ -254,6 +254,22 @@ Proteções no `send.php`:
 Remetente: `no-reply@viasegcorretora.com.br`. Resposta vai para o e-mail do
 visitante.
 
+O `mail()` da Hostinger **nao usa senha**: entrega pela fila local do servidor.
+Senha de caixa nao entra no `.env` nem em lugar nenhum do projeto.
+
+Para funcionar, o dominio precisa de:
+
+| Requisito | Estado em 23/08/2026 |
+|---|---|
+| Caixa `contato@viasegcorretora.com.br` criada | ok |
+| Caixa `no-reply@viasegcorretora.com.br` criada | ok — sem ela a Hostinger recusa o envio |
+| MX apontando para a Hostinger | ok (`mx2.hostinger.com`) |
+| SPF autorizando a Hostinger | ok (`include:_spf.mail.hostinger.com`) |
+| DMARC | presente, em modo observacao (`p=none`) |
+| DKIM | **ausente** — ver Pendencias |
+
+Envio real testado e confirmado no dominio em **23/08/2026**.
+
 ---
 
 ## 9. Segurança do site
@@ -321,7 +337,9 @@ flowchart LR
 
 | Item | Onde |
 |---|---|
-| Verificar formulário no domínio real | não é testável localmente: dev server não roda PHP |
+| Liberar `pagead2.googlesyndication.com` e `capi-automation.s3.us-east-2.amazonaws.com` na CSP | `public/.htaccess` — hoje bloqueiam conversoes do Google Ads e a API de Conversoes da Meta |
+| Publicar os 3 CNAME de DKIM da Hostinger | Cloudflare — sem eles o e-mail do dominio tem mais chance de cair no spam |
+| Acrescentar `mx1.hostinger.com` como MX secundario | Cloudflare — hoje so existe o `mx2`, sem redundancia |
 | Adicionar propriedade **com www** no Search Console e enviar o sitemap | painel do Google |
 | Conferir origem dos eventos do Pixel disparados fora do site | Gerenciador de Eventos da Meta |
 | Preencher credenciais da Hostinger em `.env.production` | para usar o envio automático |
