@@ -1,7 +1,7 @@
 # Arquitetura — Site ViaSeg Corretora
 
 > Mapa completo do projeto: do código-fonte até o rastreamento em produção.
-> Documento de referência. Última revisão: 22/08/2026.
+> Documento de referência. Última revisão: 23/08/2026.
 
 Para **o que** o site entrega, veja [PRD.md](PRD.md).
 Para **como** foi construído em detalhe, veja [SPEC.md](SPEC.md).
