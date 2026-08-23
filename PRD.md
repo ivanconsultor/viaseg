@@ -4,7 +4,7 @@
 > Como foi construído: [SPEC.md](SPEC.md) · Mapa geral: [ARQUITETURA.md](ARQUITETURA.md)
 > Regras de design e publicação: [AGENTS.md](AGENTS.md)
 >
-> Última revisão: 22/08/2026.
+> Última revisão: 23/08/2026.
 
 ## 1. Visão geral
 

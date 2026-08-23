@@ -3,7 +3,7 @@
 > Documento técnico: **como** o site foi construído.
 > O que ele entrega: [PRD.md](PRD.md) · Mapa geral: [ARQUITETURA.md](ARQUITETURA.md)
 >
-> Última revisão: 22/08/2026.
+> Última revisão: 23/08/2026.
 
 ## 1. Stack
 
@@ -133,7 +133,44 @@ Domínio não liberado é bloqueado em silêncio, sem erro visível.
 - JSON-LD `InsuranceAgency` no layout raiz;
 - imagens em WebP.
 
-## 8. Cuidados com as logos das seguradoras
+## 8. Peso das imagens
+
+O modo estático entrega o arquivo **como está na pasta**. Antes de adicionar
+qualquer foto, redimensionar para perto do tamanho de exibição:
+
+| Uso | Dimensão | Qualidade WebP |
+|---|---|---|
+| Foto de fundo (topo) | 1920 × 1280 | 82 |
+| Foto de seção | 1200 × 800 | 82 |
+| Logomarca | 256 × 256 | 90 |
+
+Converter para WebP **não** basta: o formato reduz bytes por pixel, não a
+quantidade de pixels. Em 23/08/2026 a página inicial pesava 16 MB **já em
+WebP** — a foto do topo tinha 7984 px de largura para aparecer com 375 no
+celular, e a logomarca tinha 2048 px para aparecer com 40.
+
+`sharp` já é dependência do projeto:
+
+```js
+sharp(entrada).resize(1920, 1280, { fit: 'inside', withoutEnlargement: true })
+              .webp({ quality: 82, effort: 6 }).toFile(saida)
+```
+
+Lazy loading não substitui isso — ele adia o download, não o reduz. E a foto do
+topo **não pode** ser lazy: é o elemento medido no LCP.
+
+## 9. Responsividade
+
+Verificar em 320, 375, 414, 600, 768, 834, 1024 e 1280 px.
+
+- Texto longo sem espaço (e-mail, URL) precisa de `break-all` dentro de coluna
+  de grid, senão estoura a largura e faz a página inteira rolar de lado;
+- alvos de toque com pelo menos 36 px de altura — usar padding vertical no
+  próprio link, não no item da lista;
+- auditar redimensionando a janela. Carregar a página em `iframe` com
+  `document.write` dá falso positivo em páginas com formulário.
+
+## 10. Cuidados com as logos das seguradoras
 
 - os 9 arquivos em `public/images/logo-seguradoras/` **têm fundo transparente**.
   Arquivo com fundo branco aparece como retângulo sobre a faixa;
@@ -142,7 +179,7 @@ Domínio não liberado é bloqueado em silêncio, sem erro visível.
 - **nunca usar `loading="lazy"`** na esteira: ela tem milhares de pixels de
   largura e o navegador adia o carregamento indefinidamente.
 
-## 9. Deploy
+## 11. Deploy
 
 Dois caminhos, descritos em [docs/Guia_Hostinger_Deploy.md](docs/Guia_Hostinger_Deploy.md):
 

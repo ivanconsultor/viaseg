@@ -350,7 +350,68 @@ build em tudo faz o Google desconfiar do sinal e passar a ignorá-lo.
 
 ---
 
-## 11. Publicação
+## 11. Desempenho e responsividade
+
+Medido em 23/08/2026, com compressão real do servidor.
+
+| | Antes | Depois |
+|---|---|---|
+| Peso da página inicial | 16.462 KB | **695 KB** |
+| Só de imagens | 15.989 KB | 434 KB |
+| JavaScript | 241 KB | 241 KB |
+| Requisições | 27 | 27 |
+
+### Por que a página pesava 16 MB
+
+Com `output: 'export'` e `images: { unoptimized: true }`, o Next.js entrega o
+arquivo **exatamente como está na pasta**. Não redimensiona nada. As fotos
+estavam em resolução de câmera:
+
+| Arquivo | Era | Exibido no celular | Virou |
+|---|---|---|---|
+| `casal-feliz.webp` | 7984×5323, 8,5 MB | 375×736 | 1920×1280, 155 KB |
+| `familia-na-mesa.webp` | 2528×1684, 3,7 MB | 318×238 | 1200×799, 76 KB |
+| `Logo2.webp` | 2048×2048, 2,4 MB | **40×40** | 256×256, 7 KB |
+| `familia-na-sala.webp` | 1470×980, 959 KB | 377×440 | 1200×800, 77 KB |
+| 4 fotos de `/seguros/*` | 1600×1067, 264 a 435 KB | — | 1200×800, 91 a 175 KB |
+
+**Converter para WebP não resolve isso.** WebP reduz bytes por pixel; não reduz
+a quantidade de pixels. As imagens já eram WebP quando pesavam 16 MB.
+
+Referência para qualquer foto nova: fundo 1920×1280, seção 1200×800, logomarca
+256×256, WebP com qualidade 82. A ferramenta `sharp` já é dependência do projeto.
+
+### Lazy loading
+
+Já aplicado onde cabe, pelo padrão do Next.js. A foto do topo é exceção
+proposital: ela é o elemento medido no LCP, e adiar seu carregamento **piora**
+a nota. Lazy loading controla *quando* baixar, não *quanto*.
+
+### Responsividade
+
+Verificado em 320, 375, 414, 600, 768, 834, 1024 e 1280 px, nas 12 páginas.
+
+Um defeito existia até 23/08/2026: `contato@viasegcorretora.com.br` no rodapé é
+uma palavra única de 30 caracteres. Entre 768 e 834 px a coluna do grid aperta,
+o texto não quebra e empurra o documento para 802 px — **todas** as páginas
+rolavam de lado no tablet. Corrigido com `break-all`.
+
+Alvos de toque, seguindo a recomendação do Google:
+
+| | Antes | Depois |
+|---|---|---|
+| Menu do celular | 23 px | 40 a 44 px |
+| Links do rodapé | 15 px | 36 px |
+| Telefone e e-mail do rodapé | 20 px | 36 px |
+| Campos do formulário | — | 40 px |
+
+> **Cuidado ao auditar:** carregar a página dentro de um `iframe` com
+> `document.write` dá **falso positivo** em páginas com formulário — o
+> JavaScript não hidrata igual. Medir redimensionando a janela de verdade.
+
+---
+
+## 12. Publicação
 
 ```mermaid
 flowchart LR
@@ -371,11 +432,10 @@ flowchart LR
 
 ---
 
-## 12. Pendências conhecidas
+## 13. Pendências conhecidas
 
 | Item | Onde |
 |---|---|
-| Aplicar os 7 redirecionamentos das URLs do site antigo | `public/.htaccess` — arquivo pronto em `Area de Trabalho\htaccess-para-subir`. Melhoria, nao urgencia: as URLs ja dao 404 |
 | Segundo administrador no GTM | recomendacao do proprio Google, evita bloqueio de acesso |
 | Preencher credenciais da Hostinger em `.env.production` | para usar o envio automático |
 | Revisão jurídica dos textos legais | opcional; textos já ancorados na LGPD e no CDC |
