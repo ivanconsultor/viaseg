@@ -29,6 +29,12 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 - Ao trocar qualquer logo mantendo o mesmo nome de arquivo, **incremente `VERSAO_LOGOS`** no componente (`?v=2` → `?v=3`). Sem isso, quem já visitou o site continua vendo a versão antiga em cache.
 - Nunca usar `loading="lazy"` nas logos: a esteira tem milhares de pixels de largura e o navegador adia o carregamento indefinidamente, deixando a faixa vazia.
 
+### Peso das imagens
+- Com `images: { unoptimized: true }`, o Next entrega o arquivo **exatamente como esta na pasta**. Nao redimensiona nada. Foto salva em resolucao de camera vai inteira para o visitante.
+- **Converter para WebP nao basta.** WebP reduz bytes por pixel; nao reduz a quantidade de pixels. Em 23/08/2026 a home pesava **16 MB**, sendo 8,5 MB so na foto do topo (7984x5323 exibida a 375 de largura no celular) e 2,4 MB na logomarca (2048x2048 exibida a 40x40).
+- Antes de adicionar qualquer foto, **redimensionar para perto do tamanho de exibicao**. Referencia do que ficou no projeto: foto de fundo 1920x1280, foto de secao 1200x800, logomarca 256x256, WebP com qualidade 82 (90 na logomarca).
+- Lazy loading nao resolve peso, so adia. E a foto do topo **nao pode** ser lazy: e ela que o Google cronometra no LCP.
+
 ---
 
 ## 🔒 3. Segurança e Rastreamento
