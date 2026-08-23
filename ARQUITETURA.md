@@ -217,6 +217,17 @@ visitante — irregular perante a LGPD.
 O visitante pode mudar de ideia depois pelo botão em `/cookies`, que reabre o
 aviso.
 
+**As tags da Meta exigem consentimento explícito.** As 4 tags `FB API` (caminho
+do servidor) e as 4 tags `FB WEB` (navegador) têm **verificação de permissão
+adicional** exigindo `ad_storage`, `ad_user_data`, `ad_personalization` e
+`analytics_storage`. Sem isso a tag dispara mesmo com consentimento negado: a
+verificação *integrada* do GTM apenas declara o que a tag usa, quem **bloqueia**
+é a *adicional*. O Consent Mode do Google não protege a Meta — a API de
+Conversões não participa dele.
+
+Verificado em 23/08/2026: sem aceite, nada sai para a Meta; com aceite, navegador
+e servidor disparam casados pelo `Event ID`.
+
 ### O contêiner do servidor
 
 O contêiner web **não fala direto com o Google**: a tag do Google carrega o
@@ -364,9 +375,8 @@ flowchart LR
 
 | Item | Onde |
 |---|---|
-| Marcar as verificacoes de consentimento nas 4 tags `FB API` | contêiner GTM web — hoje o evento sai para a Meta pelo servidor mesmo sem o visitante aceitar os cookies |
-| Adicionar propriedade **com www** no Search Console e enviar o sitemap | painel do Google |
-| Conferir origem dos eventos do Pixel disparados fora do site | Gerenciador de Eventos da Meta |
+| Aplicar os 7 redirecionamentos das URLs do site antigo | `public/.htaccess` — arquivo pronto em `Area de Trabalho\htaccess-para-subir`. Melhoria, nao urgencia: as URLs ja dao 404 |
+| Segundo administrador no GTM | recomendacao do proprio Google, evita bloqueio de acesso |
 | Preencher credenciais da Hostinger em `.env.production` | para usar o envio automático |
 | Revisão jurídica dos textos legais | opcional; textos já ancorados na LGPD e no CDC |
 | 3 erros de lint em `SafeShadowBoundary.tsx` | anteriores à consolidação, não bloqueiam o build |
