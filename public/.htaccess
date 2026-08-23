@@ -17,9 +17,26 @@ RewriteCond %{HTTP_HOST} !^$
 RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [L,R=301]
 
 # 3. URLs amigaveis do Next.js estatico (ex: /cotacao -> /cotacao.html)
-RewriteCond %{REQUEST_FILENAME} !-d
+#
+#    ARMADILHA: o build gera cotacao.html E TAMBEM uma pasta cotacao/ com os
+#    arquivos internos de navegacao. Ao ver a pasta, o Apache redireciona
+#    /cotacao para /cotacao/, que nao tem indice -> 403 Forbidden.
+#
+#    DirectorySlash Off impede esse redirecionamento automatico, e a regra
+#    abaixo NAO pode ter a condicao !-d: e justamente quando existe pasta com
+#    o mesmo nome que precisamos servir o .html.
+DirectorySlash Off
+Options -Indexes
+
+#    /sobre -> sobre.html  (quando nao existe arquivo com esse nome exato)
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^(.*)$ $1.html [L]
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+#    /sobre/ -> sobre.html  (visitante que digitou a barra no final)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+)/$ /$1.html [L]
 
 # 4. Pagina 404 personalizada
 ErrorDocument 404 /404.html
@@ -58,6 +75,16 @@ ErrorDocument 404 /404.html
     #   www.facebook.com                imagem de fallback do Pixel
     #
     Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://images.unsplash.com https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://td.doubleclick.net https://www.google.com https://www.google.com.br https://www.facebook.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://server.viasegcorretora.com.br https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://td.doubleclick.net https://connect.facebook.net; frame-src https://www.googletagmanager.com https://td.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+
+    # Demais cabecalhos de seguranca.
+    # Foram perdidos numa edicao anterior e so o CSP ficou no ar - conferir a
+    # resposta real do servidor depois de mexer aqui, nao confiar no arquivo.
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
 </IfModule>
 
