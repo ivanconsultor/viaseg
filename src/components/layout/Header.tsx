@@ -115,7 +115,7 @@ export default function Header({ lightText = false }: HeaderProps) {
       {/* Mobile Nav */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-4 pb-6 space-y-4 shadow-xl">
-          <ul className="space-y-3">
+          <ul className="space-y-1">
             {navLinks.map((link) => (
               <li key={link.name}>
                 {link.dropdown ? (
@@ -123,13 +123,13 @@ export default function Header({ lightText = false }: HeaderProps) {
                     <span className="block text-sm font-bold text-[#1A1A2E] px-2">
                       {link.name}
                     </span>
-                    <ul className="pl-4 space-y-2 border-l-2 border-[#FF6B00]/30">
+                    <ul className="pl-4 border-l-2 border-[#FF6B00]/30">
                       {link.dropdown.map((drop) => (
                         <li key={drop.name}>
                           <Link
                             href={drop.href}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block text-sm text-slate-700 hover:text-[#FF6B00] py-1 font-medium"
+                            className="block text-sm text-slate-700 hover:text-[#FF6B00] py-2.5 font-medium"
                           >
                             {drop.name}
                           </Link>
@@ -141,7 +141,7 @@ export default function Header({ lightText = false }: HeaderProps) {
                   <Link
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-sm font-bold text-[#1A1A2E] hover:text-[#FF6B00] px-2 py-1"
+                    className="block text-sm font-bold text-[#1A1A2E] hover:text-[#FF6B00] px-2 py-3"
                   >
                     {link.name}
                   </Link>

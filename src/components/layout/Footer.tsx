@@ -53,23 +53,23 @@ export default function Footer() {
           {/* Links */}
           <div>
             <h4 className="font-heading font-semibold text-lg mb-6">Seguros</h4>
-            <ul className="space-y-3">
-              <li><Link href="/seguros/auto" className="text-gray-400 hover:text-primary transition-colors text-sm">Seguro Auto</Link></li>
-              <li><Link href="/seguros/residencial" className="text-gray-400 hover:text-primary transition-colors text-sm">Seguro Residencial</Link></li>
-              <li><Link href="/seguros/vida" className="text-gray-400 hover:text-primary transition-colors text-sm">Seguro de Vida</Link></li>
-              <li><Link href="/seguros/empresarial" className="text-gray-400 hover:text-primary transition-colors text-sm">Seguro Empresarial</Link></li>
+            <ul className="space-y-0">
+              <li><Link href="/seguros/auto" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Seguro Auto</Link></li>
+              <li><Link href="/seguros/residencial" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Seguro Residencial</Link></li>
+              <li><Link href="/seguros/vida" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Seguro de Vida</Link></li>
+              <li><Link href="/seguros/empresarial" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Seguro Empresarial</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-heading font-semibold text-lg mb-6">Institucional</h4>
-            <ul className="space-y-3">
-              <li><Link href="/sobre" className="text-gray-400 hover:text-primary transition-colors text-sm">Sobre a ViaSeg</Link></li>
-              <li><Link href="/#parceiros" className="text-gray-400 hover:text-primary transition-colors text-sm">Nossos Parceiros</Link></li>
-              <li><Link href="/fale-conosco" className="text-gray-400 hover:text-primary transition-colors text-sm">Fale Conosco</Link></li>
-              <li><Link href="/privacidade" className="text-gray-400 hover:text-primary transition-colors text-sm">Política de Privacidade</Link></li>
-              <li><Link href="/termos" className="text-gray-400 hover:text-primary transition-colors text-sm">Termos de Uso</Link></li>
-              <li><Link href="/cookies" className="text-gray-400 hover:text-primary transition-colors text-sm">Política de Cookies</Link></li>
+            <ul className="space-y-0">
+              <li><Link href="/sobre" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Sobre a ViaSeg</Link></li>
+              <li><Link href="/#parceiros" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Nossos Parceiros</Link></li>
+              <li><Link href="/fale-conosco" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Fale Conosco</Link></li>
+              <li><Link href="/privacidade" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Política de Privacidade</Link></li>
+              <li><Link href="/termos" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Termos de Uso</Link></li>
+              <li><Link href="/cookies" className="inline-block py-2 text-gray-400 hover:text-primary transition-colors text-sm">Política de Cookies</Link></li>
             </ul>
           </div>
 
@@ -83,13 +83,13 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-400">
                 <Phone size={18} className="text-primary shrink-0" />
-                <a href="https://wa.me/5521976844444" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                <a href="https://wa.me/5521976844444" target="_blank" rel="noopener noreferrer" className="inline-block py-2 hover:text-primary transition-colors">
                   (21) 97684-4444
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-400">
                 <Mail size={18} className="text-primary shrink-0" />
-                <a href="mailto:contato@viasegcorretora.com.br" className="hover:text-primary transition-colors break-all">
+                <a href="mailto:contato@viasegcorretora.com.br" className="inline-block py-2 hover:text-primary transition-colors break-all">
                   contato@viasegcorretora.com.br
                 </a>
               </li>
