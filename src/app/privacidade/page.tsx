@@ -34,7 +34,13 @@ export default function Privacidade() {
               desde {EMPRESA.atuaDesde}
               {EMPRESA.cnpj ? <> (CNPJ {EMPRESA.cnpj})</> : null}.<br />
               Endereço: {EMPRESA.endereco}.<br />
-              Contato do Encarregado de Proteção de Dados: <strong>{EMPRESA.email}</strong>.
+              Canal de atendimento ao titular de dados: <strong>{EMPRESA.email}</strong>.
+            </p>
+            <p>
+              O próprio corretor responde pelas questões de proteção de dados e atende os pedidos
+              recebidos por esse canal. Como agente de tratamento de pequeno porte, nos termos da
+              Resolução CD/ANPD nº 2/2022, não há obrigatoriedade de indicar um Encarregado formal —
+              mas mantemos este canal permanente de contato, conforme exige a norma.
             </p>
 
             <h2 className={h2}>2. Quais dados coletamos</h2>
@@ -110,7 +116,7 @@ export default function Privacidade() {
 
             <h2 className={h2}>8. Por quanto tempo guardamos</h2>
             <ul className={ul}>
-              <li><strong>Mensagens do formulário:</strong> durante o atendimento e por até 5 anos depois, prazo que atende a exigências legais e regulatórias.</li>
+              <li><strong>Mensagens do formulário:</strong> durante o atendimento e por até 5 anos depois. Esse prazo acompanha a prescrição de 5 anos prevista no art. 27 do Código de Defesa do Consumidor e as exigências de guarda de registros aplicáveis à atividade de corretagem.</li>
               <li><strong>Registro de IP:</strong> descartado em até 1 hora.</li>
               <li><strong>Cookies de medição:</strong> conforme o prazo de cada ferramenta, no máximo 2 anos.</li>
             </ul>
@@ -130,8 +136,9 @@ export default function Privacidade() {
               <li><strong>peticionar à ANPD</strong>, a Autoridade Nacional de Proteção de Dados.</li>
             </ul>
             <p>
-              Para exercer qualquer um deles, escreva para <strong>{EMPRESA.email}</strong>. Respondemos
-              em até 15 dias.
+              Para exercer qualquer um deles, escreva para <strong>{EMPRESA.email}</strong>. Confirmamos
+              o recebimento de imediato e respondemos de forma completa em até <strong>15 dias</strong>,
+              prazo previsto no art. 19, §1º, da LGPD. O atendimento é gratuito.
             </p>
 
             <h2 className={h2}>10. Segurança</h2>
