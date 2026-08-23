@@ -16,7 +16,29 @@ RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteCond %{HTTP_HOST} !^$
 RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [L,R=301]
 
-# 3. URLs amigaveis do Next.js estatico (ex: /cotacao -> /cotacao.html)
+# 3. Redirecionamentos do site antigo (WordPress, ate 2026)
+#    O Search Console ainda lista essas URLs. Hoje elas dariam 404, o que
+#    descarta quem chega por link antigo e joga fora a autoridade acumulada.
+#    Cada uma aponta para a pagina equivalente do site novo.
+#
+#    Usar RewriteRule e nao Redirect: o Redirect vem do mod_alias, que roda em
+#    outra fase do Apache, e misturar os dois num mesmo .htaccess torna a ordem
+#    imprevisivel. Com RewriteRule tudo fica no mesmo mecanismo, e estas regras
+#    vem antes das URLs amigaveis de proposito.
+#
+#    O /?$ no fim aceita a URL com ou sem a barra final.
+RewriteRule ^sobre-nos/?$          /sobre                [L,R=301]
+RewriteRule ^seguro-de-auto/?$     /seguros/auto         [L,R=301]
+RewriteRule ^seguro-auto-e-moto/?$ /seguros/auto         [L,R=301]
+RewriteRule ^vida-empresarial/?$   /seguros/empresarial  [L,R=301]
+RewriteRule ^condominios/?$        /seguros/residencial  [L,R=301]
+RewriteRule ^privacy-policy/?$     /privacidade          [L,R=301]
+RewriteRule ^sitemap/?$            /sitemap.xml          [L,R=301]
+
+#    /2025/10/15/hello-world/ fica sem regra de proposito: e o post padrao que
+#    o WordPress cria na instalacao. 404 e o destino correto para ele.
+
+# 4. URLs amigaveis do Next.js estatico (ex: /cotacao -> /cotacao.html)
 #
 #    ARMADILHA: o build gera cotacao.html E TAMBEM uma pasta cotacao/ com os
 #    arquivos internos de navegacao. Ao ver a pasta, o Apache redireciona
@@ -38,10 +60,10 @@ RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ /$1.html [L]
 
-# 4. Pagina 404 personalizada
+# 5. Pagina 404 personalizada
 ErrorDocument 404 /404.html
 
-# 5. Cabecalhos de seguranca
+# 6. Cabecalhos de seguranca
 #    IMPORTANTE: no modo de exportacao estatica (output: 'export') o Next.js
 #    ignora a funcao headers() do next.config.ts. Estes cabecalhos so existem
 #    porque estao declarados aqui.
@@ -88,12 +110,12 @@ ErrorDocument 404 /404.html
 
 </IfModule>
 
-# 6. Bloquear acesso a arquivos sensiveis
+# 7. Bloquear acesso a arquivos sensiveis
 <FilesMatch "^\.(env|git|htaccess)|\.(env|log|bak|sql|zip)$">
     Require all denied
 </FilesMatch>
 
-# 7. Cache de arquivos estaticos
+# 8. Cache de arquivos estaticos
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresByType image/webp "access plus 1 year"
