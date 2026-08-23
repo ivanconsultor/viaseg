@@ -1,20 +1,27 @@
 /**
- * Dados oficiais da empresa, usados nas paginas legais e no rodape.
+ * Dados oficiais usados nas paginas legais e no rodape.
  *
- * >>> PREENCHER ANTES DE PUBLICAR <<<
- * CNPJ e registro SUSEP ainda estao em branco. Corretora de seguros e obrigada
- * a exibir o registro SUSEP, e as paginas legais precisam identificar quem e o
- * controlador dos dados. Basta preencher as duas linhas abaixo.
+ * Ivan atua como CORRETOR PESSOA FISICA: a identificacao oficial e o registro
+ * SUSEP, nao CNPJ. O campo cnpj fica vazio de proposito - as paginas se adaptam
+ * e simplesmente nao o exibem. Se um dia houver pessoa juridica, basta preencher.
  */
 export const EMPRESA = {
   nome: "ViaSeg Corretora de Seguros",
-  cnpj: "", // ex.: "00.000.000/0001-00"
-  susep: "", // ex.: "65956F"
+  cnpj: "", // vazio: atuacao como corretor pessoa fisica
+  susep: "65956F",
+  atuaDesde: "2005",
   endereco: "Rua Dr Othon Machado, 150 - Sala 406, Inhaúma, Rio de Janeiro/RJ",
   telefone: "(21) 97684-4444",
   email: "contato@viasegcorretora.com.br",
   site: "https://www.viasegcorretora.com.br",
 } as const;
 
-/** Data da ultima revisao real dos textos legais. Mudar so quando o texto mudar. */
+/**
+ * Data da ultima revisao REAL dos textos legais.
+ *
+ * Nao usar aqui o ano de fundacao: este campo diz quando o TEXTO mudou. Como as
+ * politicas citam LGPD, GA4 e Meta Pixel, uma data antiga se contradiria sozinha.
+ * O tempo de atuacao aparece em EMPRESA.atuaDesde, no rodape e na identificacao
+ * do corretor - que e onde ele tem valor.
+ */
 export const ATUALIZADO_EM = "22/08/2026";

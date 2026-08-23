@@ -98,7 +98,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-center">
           <p className="text-gray-500 text-sm text-center">
-            &copy; 2005 ViaSeg Corretora de Seguros. Todos os direitos reservados.
+            &copy; 2005&ndash;2026 ViaSeg Corretora de Seguros. Todos os direitos reservados.<br />Corretor de seguros registrado na SUSEP sob o n&ordm; 65956F &mdash; atuando desde 2005.
           </p>
         </div>
       </div>

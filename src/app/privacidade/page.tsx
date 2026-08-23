@@ -22,16 +22,16 @@ export default function Privacidade() {
             <p><strong>Última atualização:</strong> {ATUALIZADO_EM}</p>
 
             <p>
-              Esta política explica como a <strong>{EMPRESA.nome}</strong>
-              {EMPRESA.cnpj ? <> (CNPJ {EMPRESA.cnpj})</> : null} trata seus dados pessoais neste
+              Esta política explica como a <strong>{EMPRESA.nome}</strong> trata seus dados pessoais neste
               site, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).
               Ela descreve apenas o que acontece <strong>dentro de {EMPRESA.site}</strong>.
             </p>
 
             <h2 className={h2}>1. Quem é o controlador</h2>
             <p>
-              {EMPRESA.nome}{EMPRESA.cnpj ? <>, CNPJ {EMPRESA.cnpj}</> : null}
-              {EMPRESA.susep ? <>, registro SUSEP {EMPRESA.susep}</> : null}.<br />
+              <strong>{EMPRESA.nome}</strong>, corretor de seguros registrado na SUSEP sob o
+              nº {EMPRESA.susep}, atuando desde {EMPRESA.atuaDesde}
+              {EMPRESA.cnpj ? <> (CNPJ {EMPRESA.cnpj})</> : null}.<br />
               Endereço: {EMPRESA.endereco}.<br />
               Contato do Encarregado de Proteção de Dados: <strong>{EMPRESA.email}</strong>.
             </p>
