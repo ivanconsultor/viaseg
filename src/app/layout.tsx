@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   // dominio respondendo com e sem www, deixava o Google escolher sozinho.
   metadataBase: new URL("https://www.viasegcorretora.com.br"),
   alternates: { canonical: "/" },
+  // Endereco fixo do favicon. Sem isto o Next anexa um codigo de build ao
+  // href (/favicon.ico?favicon.<hash>.ico) que muda a cada publicacao, e o
+  // Google pede que o endereco do favicon seja estavel para exibi-lo na busca.
+  icons: { icon: "/favicon.ico" },
   title: {
     template: "%s | ViaSeg Corretora",
     default: "ViaSeg Corretora | Seguros Modernos e Confiáveis",
