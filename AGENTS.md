@@ -51,10 +51,19 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 - O contêiner web **não fala direto com o Google**: `transport_url` manda tudo para `server.viasegcorretora.com.br`. Se faltar a tag de reencaminho no servidor, o dado morre lá — foi o que deixou o Analytics **sete meses sem receber nada**, sem aviso nenhum.
 - Depois de qualquer mudança no contêiner servidor ou no `transport_url`, **conferir o Tempo real do Analytics**. É o único jeito de ver o buraco.
 - Os dois acionadores do servidor são o mesmo filtro invertido (`^(Pageview|Lead)`): Analytics recebe o que não é da Meta, Meta recebe o que é dela. Mexer num sem mexer no outro cria evento duplicado ou perdido.
+- **O nome do evento nasce no contêiner web, não no servidor.** A tag `FB API` do servidor é uma *Conversions API Tag* e não tem campo de nome de evento: repassa o que chegou. Quem decide é `1 - FB API - PageView` no contêiner **web**, campo **Nome do evento**.
+- **Maiúscula importa.** O campo estava `Pageview` e o pixel do navegador mandava `PageView`: para a Meta eram dois eventos distintos, a deduplicação por `{{Event ID}}` não acontecia e **cada visita contava duas vezes**. Corrigido em 24/08/2026. Os acionadores usam `ignorar caso`, então trocar a caixa não os quebra.
 - **Pixel ativo: `526511238923127`.** O `4860127807422598` teve a instalação automática removida em 23/08/2026. Navegador e servidor precisam usar **o mesmo** pixel, senão a deduplicação por `{{Event ID}}` para de funcionar.
 
 ### Formulário
 - `public/send.php` é o único endpoint. Remove quebras de linha dos campos (injeção de cabeçalho de e-mail), valida o e-mail, restringe origem, limita envios por IP e tem campo-armadilha.
+
+---
+
+### Favicon
+- O `.ico` mora em **`public/favicon.ico`**, nunca em `src/app/`. Em `src/app/` o Next.js gera sozinho um `href` com código de build (`/favicon.ico?favicon.<hash>.ico`) que muda a cada publicação, e o Google exige endereço estável para exibir o ícone na busca.
+- O endereço fixo vem de `icons: { icon: "/favicon.ico" }` no `layout.tsx`. Deixar o arquivo nos dois lugares faz o Next declarar **duas** tags de ícone.
+- O `.ico` precisa conter um tamanho múltiplo de 48. O nosso tem 16, 32, 48 e 256.
 
 ---
 

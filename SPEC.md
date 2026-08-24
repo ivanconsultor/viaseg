@@ -3,7 +3,7 @@
 > Documento técnico: **como** o site foi construído.
 > O que ele entrega: [PRD.md](PRD.md) · Mapa geral: [ARQUITETURA.md](ARQUITETURA.md)
 >
-> Última revisão: 23/08/2026.
+> Última revisão: 24/08/2026.
 
 ## 1. Stack
 
@@ -73,6 +73,7 @@ Tudo em `public/` é copiado para `out/` durante o build.
 |---|---|
 | `.htaccess` | HTTPS, redirecionamento www, URLs sem `.html`, 404, cabeçalhos de segurança, bloqueio de arquivos sensíveis, cache |
 | `send.php` | processa o formulário de contato pelo e-mail da Hostinger |
+| `favicon.ico` | ícone do site; **tem** que ficar aqui, não em `src/app/` |
 | `images/` | fotos, logo e as 9 logos de seguradoras |
 
 ## 5. Formulário de contato
@@ -131,6 +132,11 @@ Domínio não liberado é bloqueado em silêncio, sem erro visível.
   data do build em tudo e o Google passa a ignorar o sinal;
 - `robots.ts` gerando `robots.txt` e apontando o sitemap;
 - JSON-LD `InsuranceAgency` no layout raiz;
+- favicon em `public/favicon.ico` com o endereço fixado por
+  `icons: { icon: "/favicon.ico" }` no `layout.tsx`. Com o arquivo em
+  `src/app/favicon.ico` o Next.js anexa um código de build ao `href`, que muda
+  a cada publicação — o Google exige endereço estável. O `.ico` precisa ter um
+  tamanho múltiplo de 48 (o nosso: 16, 32, 48 e 256);
 - imagens em WebP.
 
 ## 8. Peso das imagens

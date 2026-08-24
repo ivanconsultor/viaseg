@@ -1,7 +1,7 @@
 # Arquitetura — Site ViaSeg Corretora
 
 > Mapa completo do projeto: do código-fonte até o rastreamento em produção.
-> Documento de referência. Última revisão: 23/08/2026.
+> Documento de referência. Última revisão: 24/08/2026.
 
 Para **o que** o site entrega, veja [PRD.md](PRD.md).
 Para **como** foi construído em detalhe, veja [SPEC.md](SPEC.md).
@@ -252,6 +252,17 @@ na Meta, que não os entende.
 > aviso em tela. Ao mexer no `transport_url` ou no contêiner servidor, sempre
 > conferir o Tempo real do Analytics depois.
 
+> **O nome do evento nasce no contêiner web.** A tag `FB API` do servidor é uma
+> *Conversions API Tag* e **não tem campo de nome de evento** — ela repassa o
+> nome que chegou. Quem decide é a tag `1 - FB API - PageView` do contêiner
+> **web** (tipo "Google Analytics: evento do GA4"), no campo **Nome do evento**.
+>
+> Até 24/08/2026 esse campo estava `Pageview`, com v minúsculo, enquanto o pixel
+> do navegador mandava `PageView`. Para a Meta eram **dois eventos diferentes**:
+> a deduplicação por `{{Event ID}}` não acontecia e **cada visita contava duas
+> vezes**. Corrigido para `PageView`. Os dois acionadores do servidor usam
+> `^(Pageview|Lead)` com **ignorar caso**, por isso a troca não os quebra.
+
 ### Onde mexer em cada coisa
 
 | Quero... | Onde faço | Precisa de novo build? |
@@ -343,10 +354,20 @@ para imagens, CSS e JavaScript.
 | Dados estruturados | JSON-LD `InsuranceAgency` no layout raiz |
 | Metadados | título e descrição próprios por página |
 | Imagens | WebP |
+| Favicon | `public/favicon.ico` com 16, 32, 48 e 256 px, endereço fixo |
 
 A data no sitemap é fixa por página em `src/app/sitemap.ts`. **Atualizar a data
 apenas quando o conteúdo daquela página mudar de verdade** — carimbar a data do
 build em tudo faz o Google desconfiar do sinal e passar a ignorá-lo.
+
+**Favicon.** O arquivo mora em `public/favicon.ico` e o endereço é fixado por
+`icons: { icon: "/favicon.ico" }` no `layout.tsx`. Se o `.ico` ficar em
+`src/app/favicon.ico`, o Next.js gera sozinho um `href` com código de build —
+`/favicon.ico?favicon.<hash>.ico` — que **muda a cada publicação**, e o Google
+pede endereço estável para exibir o ícone na busca. Manter os dois faz o Next
+declarar **duas** tags de ícone na mesma página. O `.ico` precisa conter pelo
+menos um tamanho múltiplo de 48; o nosso tem 16, 32, 48 e 256.
+
 
 ---
 
@@ -437,6 +458,7 @@ flowchart LR
 | Item | Onde |
 |---|---|
 | Segundo administrador no GTM | recomendacao do proprio Google, evita bloqueio de acesso |
+| Favicon ainda não exibido na busca | arquivo e endereço corretos desde 24/08/2026; depende do ritmo do Google |
 | Preencher credenciais da Hostinger em `.env.production` | para usar o envio automático |
 | Revisão jurídica dos textos legais | opcional; textos já ancorados na LGPD e no CDC |
 | 3 erros de lint em `SafeShadowBoundary.tsx` | anteriores à consolidação, não bloqueiam o build |
