@@ -38,6 +38,25 @@ export default function FaleConosco() {
       const data = await response.json();
 
       if (response.ok && data.success) {
+        // Avisa o GTM: aciona o lead "Formulario" (GA4 generate_lead e Meta Lead).
+        // E-mail e telefone vao normalizados, em texto aberto: quem aplica o hash
+        // SHA-256 sao as tags oficiais do Google e da Meta, nao este codigo.
+        // Telefone em E.164: 12 digitos ou mais comecando com 55 ja tem o pais;
+        // abaixo disso e numero local (o DDD 55 de Santa Maria nao se confunde).
+        const digitos = whatsapp.replace(/\D/g, "");
+        const telefone = !digitos
+          ? ""
+          : digitos.length >= 12 && digitos.startsWith("55")
+            ? "+" + digitos
+            : "+55" + digitos;
+        const dl = (window as unknown as { dataLayer?: unknown[] }).dataLayer;
+        if (Array.isArray(dl)) {
+          dl.push({
+            event: "formulario_enviado",
+            lead_email: email.trim().toLowerCase(),
+            lead_telefone: telefone,
+          });
+        }
         alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
         form.reset();
       } else {

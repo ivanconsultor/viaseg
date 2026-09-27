@@ -102,7 +102,7 @@ export default function Privacidade() {
             <h2 className={h2}>6. Com quem compartilhamos</h2>
             <ul className={ul}>
               <li><strong>Seguradoras parceiras:</strong> quando você nos procura para contratar, compartilhamos o necessário para gerar a proposta.</li>
-              <li><strong>Google e Meta:</strong> dados de navegação, apenas se você aceitar os cookies.</li>
+              <li><strong>Google e Meta:</strong> dados de navegação e, quando você envia o formulário, seu e-mail e telefone de forma criptografada (hash), apenas se você aceitar os cookies.</li>
               <li><strong>Empresa de hospedagem:</strong> que mantém o site no ar e entrega as mensagens do formulário.</li>
             </ul>
             <p>Não vendemos, alugamos nem cedemos seus dados a terceiros com finalidade comercial.</p>
