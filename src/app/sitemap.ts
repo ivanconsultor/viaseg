@@ -23,7 +23,7 @@ type Pagina = {
 
 const paginas: Pagina[] = [
   { rota: "",                       atualizadoEm: "2026-08-22", frequencia: "weekly",  prioridade: 1.0 },
-  { rota: "/cotacao",               atualizadoEm: "2026-08-22", frequencia: "monthly", prioridade: 0.9 },
+  { rota: "/cotacao",               atualizadoEm: "2026-10-03", frequencia: "monthly", prioridade: 0.9 },
   { rota: "/seguros/auto",          atualizadoEm: "2026-08-22", frequencia: "monthly", prioridade: 0.8 },
   { rota: "/seguros/vida",          atualizadoEm: "2026-08-22", frequencia: "monthly", prioridade: 0.8 },
   { rota: "/seguros/residencial",   atualizadoEm: "2026-08-22", frequencia: "monthly", prioridade: 0.8 },
@@ -34,7 +34,7 @@ const paginas: Pagina[] = [
   // Paginas legais: entram com prioridade baixa. Elas estao linkadas no rodape de
   // todas as paginas, entao o Google acha de qualquer jeito - melhor declarar a
   // importancia real do que deixar ele adivinhar.
-  { rota: "/privacidade",           atualizadoEm: "2026-08-22", frequencia: "yearly",  prioridade: 0.3 },
+  { rota: "/privacidade",           atualizadoEm: "2026-09-27", frequencia: "yearly",  prioridade: 0.3 },
   { rota: "/termos",                atualizadoEm: "2026-08-22", frequencia: "yearly",  prioridade: 0.3 },
   { rota: "/cookies",               atualizadoEm: "2026-08-22", frequencia: "yearly",  prioridade: 0.3 },
 ];

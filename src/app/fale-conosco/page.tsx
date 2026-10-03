@@ -26,13 +26,49 @@ export default function FaleConosco() {
     const whatsapp = whatsappInput?.value || "";
     const assunto = assuntoInput?.value || "";
 
+    // Identificador unico deste envio. O mesmo valor vai para o servidor (que
+    // chama a API de Conversoes) e para o dataLayer (que alimenta o pixel do
+    // navegador). E por ele que a Meta percebe que os dois caminhos sao o
+    // MESMO lead - sem isso, cada envio conta duas vezes.
+    const eventId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+    // Cookies do proprio pixel: melhoram muito a correspondencia na Meta.
+    const lerCookie = (nomeCookie: string) =>
+      document.cookie
+        .split("; ")
+        .find((c) => c.startsWith(`${nomeCookie}=`))
+        ?.split("=")
+        .slice(1)
+        .join("=") || "";
+
+    // Sem aceite dos cookies, o servidor nao envia nada para a Meta (LGPD).
+    let consentimento = false;
+    try {
+      consentimento = localStorage.getItem("viaseg_cookie_consent") === "accepted";
+    } catch {
+      consentimento = false;
+    }
+
     try {
       const response = await fetch("/send.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nome, email, whatsapp, assunto }),
+        body: JSON.stringify({
+          nome,
+          email,
+          whatsapp,
+          assunto,
+          event_id: eventId,
+          fbp: lerCookie("_fbp"),
+          fbc: lerCookie("_fbc"),
+          pagina: window.location.href,
+          consentimento,
+        }),
       });
 
       const data = await response.json();
@@ -55,6 +91,10 @@ export default function FaleConosco() {
             event: "formulario_enviado",
             lead_email: email.trim().toLowerCase(),
             lead_telefone: telefone,
+            // A tag do pixel precisa usar ESTE id no campo "Event ID", e nao o
+            // {{Event ID}} generico: e o mesmo que o send.php mandou para a API
+            // de Conversoes. Variavel no GTM: DL - lead_event_id.
+            lead_event_id: eventId,
           });
         }
         alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");

@@ -44,3 +44,6 @@ next-env.d.ts
 
 # pacotes de deploy (gerados pelo build, nao versionar)
 *.zip
+
+# Segredo da API de Conversoes da Meta (ver capi-config.example.php)
+public/capi-config.php

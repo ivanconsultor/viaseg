@@ -133,7 +133,7 @@ export default function Cotacao() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-[#FF6B00] font-bold text-sm group-hover:translate-x-1 transition-transform">
-                  <span>Cotar Agora</span>
+                  <span>Simular na Porto Seguro</span>
                   <ArrowRight size={16} />
                 </div>
               </motion.a>

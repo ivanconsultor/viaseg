@@ -96,7 +96,7 @@ ErrorDocument 404 /404.html
     #   connect.facebook.net            Pixel do Facebook
     #   www.facebook.com                imagem de fallback do Pixel
     #
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.googleadservices.com https://www.google-analytics.com https://*.googlesyndication.com https://*.doubleclick.net https://capi-automation.s3.us-east-2.amazonaws.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://images.unsplash.com https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://*.googlesyndication.com https://*.doubleclick.net https://www.google.com https://www.google.com.br https://www.facebook.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://server.viasegcorretora.com.br https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://www.googleadservices.com https://*.googlesyndication.com https://*.doubleclick.net https://www.google.com https://www.google.com.br https://capi-automation.s3.us-east-2.amazonaws.com https://connect.facebook.net https://www.facebook.com; frame-src 'self' https://server.viasegcorretora.com.br https://www.googletagmanager.com https://*.doubleclick.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.googleadservices.com https://www.google-analytics.com https://*.googlesyndication.com https://*.doubleclick.net https://capi-automation.s3.us-east-2.amazonaws.com https://connect.facebook.net https://stapecdn.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://images.unsplash.com https://server.viasegcorretora.com.br https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://*.googlesyndication.com https://*.doubleclick.net https://www.google.com https://www.google.com.br https://www.facebook.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://server.viasegcorretora.com.br https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://www.googleadservices.com https://*.googlesyndication.com https://*.doubleclick.net https://www.google.com https://www.google.com.br https://capi-automation.s3.us-east-2.amazonaws.com https://connect.facebook.net https://www.facebook.com; frame-src 'self' https://server.viasegcorretora.com.br https://www.googletagmanager.com https://*.doubleclick.net https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
 
     # Demais cabecalhos de seguranca.
@@ -112,6 +112,13 @@ ErrorDocument 404 /404.html
 
 # 7. Bloquear acesso a arquivos sensiveis
 <FilesMatch "^\.(env|git|htaccess)|\.(env|log|bak|sql|zip)$">
+    Require all denied
+</FilesMatch>
+
+# Configuracao da API de Conversoes: guarda o token da Meta. Como e PHP, o
+# servidor executa e nao mostra o conteudo - esta regra e a segunda tranca,
+# para o caso de o PHP parar de ser interpretado por alguma troca de plano.
+<FilesMatch "^capi-config(\.example)?\.php$">
     Require all denied
 </FilesMatch>
 

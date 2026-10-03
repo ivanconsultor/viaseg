@@ -31,4 +31,4 @@ export const EMPRESA = {
  * O tempo de atuacao aparece em EMPRESA.atuaDesde, no rodape e na identificacao
  * do corretor - que e onde ele tem valor.
  */
-export const ATUALIZADO_EM = "22/08/2026";
+export const ATUALIZADO_EM = "27/09/2026";
