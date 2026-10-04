@@ -1,7 +1,7 @@
 # Arquitetura — Site ViaSeg Corretora
 
 > Mapa completo do projeto: do código-fonte até o rastreamento em produção.
-> Documento de referência. Última revisão: 24/08/2026.
+> Documento de referência. Última revisão: 03/10/2026.
 
 Para **o que** o site entrega, veja [PRD.md](PRD.md).
 Para **como** foi construído em detalhe, veja [SPEC.md](SPEC.md).
@@ -49,6 +49,8 @@ compilado** (o prato). A pasta `out/` é gerada a cada build e está no
 | 12/06/2026 | Projeto criado com `create-next-app` |
 | 07/07/2026 | Último commit antes da consolidação — exportação estática ativada |
 | 22/08/2026 | 45 dias de trabalho local consolidados; correções de segurança, SEO, rastreamento e documentação |
+| 27/09/2026 | formulário passa a mandar e-mail e telefone ao GTM; política de privacidade atualizada |
+| 03/10/2026 | lead do formulário chega à Meta pelo servidor (Data Tag + Data Client da Stape); regras de deploy só por zip completo |
 
 O domínio esteve hospedado na **HostGator** antes de migrar para a **Hostinger**.
 Credenciais antigas foram removidas do projeto (ficaram em `_OBSOLETOS/`).
@@ -66,7 +68,7 @@ Credenciais antigas foram removidas do projeto (ficaram em `_OBSOLETOS/`).
 | Ícones | Lucide React |
 | Formulário | React Hook Form + Zod |
 | Servidor | Apache/LiteSpeed (hospedagem compartilhada) |
-| Backend | PHP apenas para o envio de e-mail (`send.php`) |
+| Backend | PHP apenas no formulário (`send.php`: e-mail e, opcional, API de Conversões) |
 
 Não há banco de dados, CMS nem servidor Node em produção. O site é HTML estático.
 
@@ -75,7 +77,7 @@ Não há banco de dados, CMS nem servidor Node em produção. O site é HTML est
 ## 4. Mapa de pastas
 
 ```
-C02 viaseg-corrigido/
+C01 viaseg/
 │
 ├── README.md              porta de entrada
 ├── PRD.md                 o que o site entrega
@@ -88,7 +90,8 @@ C02 viaseg-corrigido/
 │   ├── Guia_Hostinger_Deploy.md
 │   ├── Guia_Formulario_Contato.md
 │   ├── SEO.md
-│   └── referencias_design.md
+│   ├── referencias_design.md
+│   └── trackeamento-formulario-retomada.md   histórico, superado
 │
 ├── src/
 │   ├── app/                       uma pasta por rota
@@ -116,6 +119,8 @@ C02 viaseg-corrigido/
 ├── public/                        copiado inteiro para out/ no build
 │   ├── .htaccess                  HTTPS, www, URLs, 404, segurança, cache
 │   ├── send.php                   processa o formulário de contato
+│   ├── capi-config.example.php    modelo do token da API de Conversões
+│   ├── capi-config.php            token real — FORA do git, só no zip
 │   └── images/
 │       └── logo-seguradoras/      9 logos, fundo transparente
 │
@@ -240,7 +245,13 @@ tudo passa por lá. Quem recebe é o cliente `GA4`; quem reencaminha são as tag
 | Acionador `Google Analytics` | `Cliente Name` contém GA4 **e** `Event Name` **não** casa `^(Pageview\|Lead)` |
 | Tag `GA4` | reencaminha ao Google Analytics `G-WWDS8CMG8P` |
 | Acionador `GA4` | `Cliente Name` contém GA4 **e** `Event Name` casa `^(Pageview\|Lead)` |
-| Tag `FB API` | envia à API de Conversões da Meta, pixel `526511238923127` |
+| Tag `FB API` | envia à API de Conversões da Meta, pixel `526511238923127` (PageView, WhatsApp, Porto) — **ainda com o token antigo** em 03/10/2026 |
+| Cliente `Data Client` (Stape) | recebe a Data Tag do contêiner web no caminho `/data` |
+| Acionador `Data Client - Lead` | `Client Name` = `Data Client` **e** `Event Name` = `generate_lead` |
+| Tag `FB CAPI - Lead Formulario (Stape)` | envia o `Lead` do formulário com e-mail e telefone em hash e o mesmo `event_id` do pixel — token novo, funcionando |
+
+Versões publicadas em 03/10/2026: GTM web **v9**, GTM servidor **v6**. Detalhe
+completo, provas e regras do GTM em `CA07 meta/rastreamento-viaseg.md`.
 
 Os dois acionadores são o mesmo filtro invertido: cada destino recebe só o que
 é dele. Sem isso, `scroll`, `click` e `user_engagement` do Analytics vão parar
@@ -289,7 +300,16 @@ flowchart LR
     V -->|falha| E["Erro ao visitante"]
     V -->|ok| M["mail() da Hostinger"]
     M --> D["contato@viasegcorretora.com.br"]
+    V -->|ok| DL["dataLayer: formulario_enviado<br/>lead_email · lead_telefone · lead_event_id"]
+    DL --> PX["Pixel Meta (navegador)"]
+    DL --> DT["Data Tag → server…/data<br/>→ FB CAPI (servidor)"]
+    PX --> META["Meta: Lead deduplicado pelo event_id"]
+    DT --> META
 ```
+
+O rastreamento só vale com o aceite dos cookies. O `send.php` tem ainda um
+caminho direto à API de Conversões (via `capi-config.php`), hoje com token
+antigo e sem entregar; o caminho oficial é o da Data Tag.
 
 Proteções no `send.php`:
 
@@ -338,7 +358,9 @@ Todos os cabeçalhos vivem em `public/.htaccess`.
 | `Referrer-Policy` | limita o que é enviado ao sair do site |
 | `Permissions-Policy` | bloqueia câmera, microfone, localização e pagamento |
 
-Também bloqueia acesso a `.env`, `.log`, `.sql` e `.zip`, e define cache longo
+A CSP libera `https://stapecdn.com` desde 03/10/2026 (script da Data Tag).
+
+Também bloqueia acesso a `.env`, `.log`, `.sql`, `.zip` e `capi-config.php`, e define cache longo
 para imagens, CSS e JavaScript.
 
 ---
@@ -437,19 +459,23 @@ Alvos de toque, seguindo a recomendação do Google:
 ```mermaid
 flowchart LR
     A["npm run build"] --> B["out/"]
-    B --> C{"Como enviar?"}
-    C -->|manual| D["ZIP → hPanel → extrair<br/>não precisa de senha FTP"]
-    C -->|automático| E["upload_ftp.py<br/>lê .env.production, usa FTPS"]
-    D --> F["public_html"]
-    E --> F
+    B --> Z["CA06 web/site-viaseg.zip<br/>arquivos soltos na raiz"]
+    Z --> F["hPanel → extrair DIRETO<br/>na public_html, Replace all"]
+    F --> C["conferir o ar contra out/"]
+    C --> G["git commit + push"]
 ```
+
+**Só o zip completo.** Nada de arquivo avulso, e `upload_ftp.py` está fora de
+uso pelo mesmo motivo. Git só depois de conferido no ar: PC, GitHub e site
+sempre iguais. O zip contém o token (`capi-config.php`): não versionar.
 
 **Sempre conferir depois de gerar o ZIP:**
 
 1. o `.htaccess` entrou? Começa com ponto e muitos compactadores o ignoram.
    Sem ele, todas as URLs quebram;
 2. o conteúdo está na raiz do ZIP, não dentro de uma pasta `out`?
-3. o `send.php` está presente? Sem ele o formulário para.
+3. o `send.php` e o `capi-config.php` estão presentes? Sem o primeiro o formulário para;
+4. depois de extrair: não ficou subpasta (`site-viaseg`, `viaseg`) na `public_html`?
 
 ---
 
@@ -459,6 +485,8 @@ flowchart LR
 |---|---|
 | Segundo administrador no GTM | recomendacao do proprio Google, evita bloqueio de acesso |
 | Favicon ainda não exibido na busca | arquivo e endereço corretos desde 24/08/2026; depende do ritmo do Google |
-| Preencher credenciais da Hostinger em `.env.production` | para usar o envio automático |
+| Tag `FB API` do servidor com token antigo | PageView, WhatsApp e Porto não chegam pelo servidor; Ivan cola o token novo e publica |
+| `capi-config.php` com token antigo | decidir se mantém o caminho direto do `send.php` ou o remove |
+| Plano Stape Free | vence em 15/10/2026 |
 | Revisão jurídica dos textos legais | opcional; textos já ancorados na LGPD e no CDC |
 | 3 erros de lint em `SafeShadowBoundary.tsx` | anteriores à consolidação, não bloqueiam o build |

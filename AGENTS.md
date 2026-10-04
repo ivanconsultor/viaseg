@@ -57,6 +57,8 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 
 ### Formulário
 - `public/send.php` é o único endpoint. Remove quebras de linha dos campos (injeção de cabeçalho de e-mail), valida o e-mail, restringe origem, limita envios por IP e tem campo-armadilha.
+- Após envio aceito, a página empurra `formulario_enviado` no `dataLayer` com `lead_email`, `lead_telefone` (E.164) e `lead_event_id`. O mesmo `event_id` vai ao pixel e à Data Tag (Stape) para a Meta deduplicar. Não renomear esses campos sem mudar o GTM junto.
+- O `send.php` também envia o `Lead` direto à API de Conversões se houver `capi-config.php` com token e o visitante tiver aceitado os cookies. Em 03/10/2026 esse arquivo tem o token antigo: o caminho oficial é a Data Tag.
 
 ---
 
@@ -84,7 +86,8 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 4. **Geramento do Pacote ZIP (`site-viaseg.zip`):**
    - O arquivo ZIP de entrega deve incluir os conteúdos internos da pasta `out/` (garantindo `.htaccess` e `send.php` na raiz do pacote ZIP, sem pasta por fora).
    - Gerar com o `tar.exe` do Windows (o `tar` do Git Bash não aceita caminho `C:`).
-   - O arquivo final é atualizado diretamente na Área de Trabalho (`C:\Users\ivanc\Desktop\site-viaseg.zip`). Ele contém o `capi-config.php` (token): não guardar dentro de pasta versionada.
+   - O arquivo final fica em `CA06 web/site-viaseg.zip` (ao lado da pasta `C01 viaseg`), nome fixo, substituindo o anterior. A versão de 03/10/2026 foi conferida idêntica ao `out/` (173 arquivos).
+   - Ele contém o `capi-config.php` (token). `CA06 web` está dentro do repositório externo `Documents/Claude`: **nunca** fazer `git add` desse zip lá.
 
 5. **Regras de deploy (03/10/2026) — não negociáveis:**
    - **Nunca subir partes do site.** Nada de arquivo avulso na `public_html`: só o zip completo.

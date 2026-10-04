@@ -3,7 +3,7 @@
 > Documento técnico: **como** o site foi construído.
 > O que ele entrega: [PRD.md](PRD.md) · Mapa geral: [ARQUITETURA.md](ARQUITETURA.md)
 >
-> Última revisão: 24/08/2026.
+> Última revisão: 03/10/2026.
 
 ## 1. Stack
 
@@ -33,7 +33,7 @@ src/lib/
   empresa.ts          SUSEP, endereço, contato, ano de atuação
   rastreamento.ts     GTM, chave liga/desliga, contas configuradas
   utils.ts
-public/               imagens, .htaccess, send.php
+public/               imagens, .htaccess, send.php, capi-config.example.php
 docs/                 guias de deploy, formulário, SEO e design
 ```
 
@@ -73,13 +73,17 @@ Tudo em `public/` é copiado para `out/` durante o build.
 |---|---|
 | `.htaccess` | HTTPS, redirecionamento www, URLs sem `.html`, 404, cabeçalhos de segurança, bloqueio de arquivos sensíveis, cache |
 | `send.php` | processa o formulário de contato pelo e-mail da Hostinger |
+| `capi-config.example.php` | modelo da configuração da API de Conversões (versionado) |
+| `capi-config.php` | cópia preenchida com o token da Meta — **fora do git**, vai só no zip; o `.htaccess` nega acesso a ele (403) |
 | `favicon.ico` | ícone do site; **tem** que ficar aqui, não em `src/app/` |
 | `images/` | fotos, logo e as 9 logos de seguradoras |
 
 ## 5. Formulário de contato
 
 `public/send.php` é o único endpoint. Recebe JSON
-`{nome, email, whatsapp, assunto}` e devolve `{success, message}`.
+`{nome, email, whatsapp, assunto, event_id, fbp, fbc, pagina, consentimento}`
+e devolve `{success, message}`. Os cinco últimos campos servem só ao
+rastreamento e não entram no e-mail.
 
 Proteções:
 
@@ -98,6 +102,34 @@ Escrito para rodar em PHP antigo: sem arrow functions e com alternativa ao
 > Não é testável localmente: o servidor de desenvolvimento do Next.js não
 > executa PHP, e `mail()` depende de um servidor de e-mail configurado. O teste
 > só acontece na Hostinger. Verificado em produção em **23/08/2026**.
+
+### Rastreamento do envio (desde 03/10/2026)
+
+Depois de um envio aceito, `src/app/fale-conosco/page.tsx`:
+
+1. gera um `event_id` único (`crypto.randomUUID()`);
+2. empurra no `dataLayer` o evento `formulario_enviado` com `lead_email`
+   (minúsculo), `lead_telefone` (E.164, `+55...`) e `lead_event_id`.
+
+No GTM web esse evento alimenta o **pixel** (`Lead`, Event ID =
+`lead_event_id`) e a **Data Tag** da Stape, que manda e-mail e telefone para
+`server.viasegcorretora.com.br/data`; no servidor, a tag Facebook Conversion API
+envia o `Lead` com o mesmo `event_id`, e a Meta deduplica os dois caminhos.
+Esse é o caminho oficial — documentado em `CA07 meta/rastreamento-viaseg.md`.
+
+O `send.php` também sabe enviar o `Lead` direto à API de Conversões (e-mail e
+telefone em SHA-256, mesmo `event_id`), **só** se o visitante aceitou os cookies
+e se existir `capi-config.php` com token. Falha de rede ou de token nunca
+derruba o formulário: vira uma linha em `viaseg_capi.log` na pasta temporária
+do servidor. Em 03/10/2026 o `capi-config.php` no ar ainda tem o **token
+antigo** (de um app apagado), então esse caminho não entrega — decisão de
+manter ou remover pendente com o Ivan.
+
+O código do país no telefone: 12 dígitos ou mais começando com 55 já têm o país;
+abaixo disso recebem 55 na frente. Assim o DDD 55 (Santa Maria) não é tomado por
+código de país.
+
+### Entrega do e-mail
 
 O `mail()` da Hostinger entrega pela fila local do servidor e **não usa senha** —
 nenhuma credencial de caixa entra no projeto. Mas exige que as duas caixas
@@ -121,7 +153,8 @@ As tags (GA4, Ads, Pixel) **não estão no código**: vivem no contêiner do GTM
 Trocar tag ou adicionar conversão não exige build novo.
 
 Ao adicionar qualquer domínio de medição, **liberar na CSP do `.htaccess`**.
-Domínio não liberado é bloqueado em silêncio, sem erro visível.
+Domínio não liberado é bloqueado em silêncio, sem erro visível. Exemplo real:
+a Data Tag carrega script de `https://stapecdn.com`, liberado em 03/10/2026.
 
 ## 7. SEO técnico
 
@@ -187,12 +220,22 @@ Verificar em 320, 375, 414, 600, 768, 834, 1024 e 1280 px.
 
 ## 11. Deploy
 
-Dois caminhos, descritos em [docs/Guia_Hostinger_Deploy.md](docs/Guia_Hostinger_Deploy.md):
+Caminho oficial desde 03/10/2026, descrito em
+[docs/Guia_Hostinger_Deploy.md](docs/Guia_Hostinger_Deploy.md):
 
-1. **Manual** — compactar o conteúdo de dentro de `out/` e extrair em
-   `public_html` pelo hPanel. Não exige credenciais de FTP.
-2. **Automático** — `upload_ftp.py`, que lê `.env.production` e usa **FTPS**
-   (conexão criptografada; `FTP_TLS=false` cai para FTP puro se o plano exigir).
+1. `cmd /c npm run build`;
+2. compactar o conteúdo de dentro de `out/` em `site-viaseg.zip` (arquivos
+   soltos na raiz do zip) com o `tar.exe` do Windows;
+3. subir o zip e extrair **direto na `public_html`** pelo hPanel, com
+   *Replace all*, conferindo que não ficou subpasta;
+4. conferir o site no ar contra o `out/`, arquivo por arquivo;
+5. só então `git commit` e `git push`.
+
+**Nunca subir arquivo avulso.** Envio parcial gerou cópias numeradas
+(`_next.2499`) na `public_html` e deixou o Git atrás do ar.
+
+`upload_ftp.py` (FTPS, lê `.env.production`) continua no repositório, mas está
+**fora de uso**: sobe arquivo por arquivo, o que contraria a regra acima.
 
 O `.env.production` contém senha e **nunca** vai para o Git. A regra `.env*` do
 `.gitignore` cobre isso, com exceção explícita para `.env.producao.exemplo`,

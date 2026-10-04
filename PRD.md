@@ -4,7 +4,7 @@
 > Como foi construído: [SPEC.md](SPEC.md) · Mapa geral: [ARQUITETURA.md](ARQUITETURA.md)
 > Regras de design e publicação: [AGENTS.md](AGENTS.md)
 >
-> Última revisão: 23/08/2026.
+> Última revisão: 03/10/2026.
 
 ## 1. Visão geral
 
@@ -83,6 +83,9 @@ Regras completas em [AGENTS.md](AGENTS.md).
   revista a qualquer momento.
 - As políticas devem descrever **o tratamento real**, nunca um hipotético.
 - O registro SUSEP deve estar visível.
+- E-mail e telefone do formulário só seguem para Google e Meta depois do aceite,
+  e em hash SHA-256. A política de privacidade declara esse compartilhamento
+  (atualizada em 27/09/2026).
 
 ## 8. Medição
 
@@ -93,7 +96,7 @@ Configurado, gerenciado pelo contêiner do Google Tag Manager:
 | Google Analytics 4 | audiência e comportamento |
 | Google Ads | conversões e público |
 | Meta Pixel | conversões e público no Facebook e Instagram |
-| Stape (server-side) | medição pelo servidor, em domínio próprio |
+| Stape (server-side) | medição pelo servidor, em domínio próprio; leva o lead do formulário à API de Conversões da Meta |
 | Search Console | indexação e desempenho na busca |
 
 Identificadores em [ARQUITETURA.md](ARQUITETURA.md#7-rastreamento).

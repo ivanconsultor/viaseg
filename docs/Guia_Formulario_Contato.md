@@ -21,7 +21,7 @@ Absolutamente nada no código. Já deixei tudo configurado e programado para voc
    npm run build
    ```
 2. Compacte o conteúdo gerado dentro da pasta **`out`** (que inclui as páginas em HTML e o script `send.php` gerado automaticamente).
-3. Suba o ZIP na pasta **`public_html`** do gerenciador de arquivos da Hostinger e descompacte.
+3. Suba o ZIP na pasta **`public_html`** do gerenciador de arquivos da Hostinger e descompacte **direto na `public_html`** (sem subpasta). Passo a passo em [Guia_Hostinger_Deploy.md](Guia_Hostinger_Deploy.md).
 
 ---
 
@@ -30,5 +30,16 @@ Absolutamente nada no código. Já deixei tudo configurado e programado para voc
 - **E-mail de Destino:** O script está configurado para entregar as mensagens em `contato@viasegcorretora.com.br`. 
 - **Caixa de Entrada / Spam:** No primeiro envio de teste pelo site, caso o e-mail demore a aparecer, verifique a pasta de **Spam/Lixo Eletrônico** do seu e-mail. Para evitar que caia no Spam:
   - Adicione o remetente `no-reply@viasegcorretora.com.br` aos seus contatos confiáveis.
-  - Se desejar alterar o e-mail de recebimento no futuro, basta abrir o arquivo `public/send.php` e alterar a linha 32:
-    `$to = "seu-email@dominio.com";`
+  - Se desejar alterar o e-mail de recebimento no futuro, basta abrir o arquivo `public/send.php` e alterar a variável `$destino`:
+    `$destino = "contato@viasegcorretora.com.br";`
+
+---
+
+## Rastreamento do envio (03/10/2026)
+
+O envio também registra o lead na Meta e no Google, só com o aceite dos cookies:
+
+- a página empurra `formulario_enviado` no `dataLayer` com e-mail, telefone e um `lead_event_id`;
+- o GTM manda o `Lead` pelo navegador (pixel) e pelo servidor (Data Tag da Stape), casados pelo mesmo id.
+
+Detalhes técnicos em [SPEC.md](../SPEC.md) (seção 5). Documentação oficial do rastreamento: `CA07 meta/rastreamento-viaseg.md`.
