@@ -82,8 +82,18 @@ Este documento estabelece as regras de design, arquitetura e processos de public
    ```
 
 4. **Geramento do Pacote ZIP (`site-viaseg.zip`):**
-   - O arquivo ZIP de entrega deve incluir os conteúdos internos da pasta `out/` (garantindo `.htaccess` e `send.php` na raiz do pacote ZIP).
-   - O arquivo final é atualizado diretamente na Área de Trabalho (`C:\Users\ivanc\Desktop\site-viaseg.zip`).
+   - O arquivo ZIP de entrega deve incluir os conteúdos internos da pasta `out/` (garantindo `.htaccess` e `send.php` na raiz do pacote ZIP, sem pasta por fora).
+   - Gerar com o `tar.exe` do Windows (o `tar` do Git Bash não aceita caminho `C:`).
+   - O arquivo final é atualizado diretamente na Área de Trabalho (`C:\Users\ivanc\Desktop\site-viaseg.zip`). Ele contém o `capi-config.php` (token): não guardar dentro de pasta versionada.
+
+5. **Regras de deploy (03/10/2026) — não negociáveis:**
+   - **Nunca subir partes do site.** Nada de arquivo avulso na `public_html`: só o zip completo.
+   - **Extrair direto na `public_html`.** A janela Extrair da Hostinger preenche sozinha um nome de pasta; se os arquivos caem numa subpasta (`site-viaseg`, `viaseg`), o site no ar não muda. Conferir o destino antes de confirmar e, depois, que não ficou subpasta. Usar **Replace all**.
+   - **Conferir o site no ar contra o `out/`**, arquivo por arquivo, antes de dizer que está pronto.
+   - **Commit e push para o GitHub só depois de testado no ar.** PC, GitHub e site ficam sempre iguais.
+   - `public/capi-config.php` nunca vai para o git.
+   - Tag nova no GTM que carrega script externo exige conferir a CSP do `public/.htaccess`.
+   - Documentação do rastreamento: `CA07 meta/rastreamento-viaseg.md`.
 
 ---
 

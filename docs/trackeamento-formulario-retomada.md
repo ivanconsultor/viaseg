@@ -1,3 +1,6 @@
+> **SUPERADO em 03/10/2026.** O lead do formulario chega pela Meta via Data Tag + Data Client (Stape).
+> Documentacao oficial: `CA07 meta/rastreamento-viaseg.md`. Este arquivo e so historico.
+
 # ▶ ONDE PARAMOS — 01/10/2026, noite
 
 **Próximo passo (Ivan):** gerar um token novo da API de Conversões e trocar em

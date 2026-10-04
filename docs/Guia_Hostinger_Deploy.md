@@ -39,7 +39,7 @@ Com o arquivo configurado, vamos compilar o site:
    ```
 2. Aguarde a finalização da compilação.
 3. Quando o build terminar, você verá que o Next.js criou uma pasta nova chamada **`out`** na raiz do seu projeto.
-4. **Compacte (adicione para o formato ZIP)** todo o conteúdo interno da pasta **`out`** (certifique-se de compactar os arquivos de dentro dela, e não a pasta `out` em si). Nomeie o arquivo como `site.zip`.
+4. **Compacte (adicione para o formato ZIP)** todo o conteúdo interno da pasta **`out`** (certifique-se de compactar os arquivos de dentro dela, e não a pasta `out` em si). Nomeie o arquivo como `site-viaseg.zip`.
 
 ---
 
@@ -49,9 +49,12 @@ Com o arquivo configurado, vamos compilar o site:
 2. Vá em **Arquivos** e abra o **Gerenciador de Arquivos**.
 3. Acesse a pasta do seu site chamada **`public_html`**.
 4. Se houver algum arquivo padrão da Hostinger lá dentro (como um `default.php` ou `index.php` de boas-vindas), exclua-o para evitar conflitos.
-5. Faça o upload do arquivo `site.zip` para dentro de `public_html`.
-6. Clique com o botão direito no arquivo `site.zip` dentro do gerenciador e selecione **Extrair** (ou Descompactar).
-7. Todos os arquivos do site aparecerão dentro de `public_html`.
+5. Faça o upload do arquivo `site-viaseg.zip` para dentro de `public_html`. **Nunca suba arquivos soltos**: sempre o zip completo.
+6. Clique com o botão direito no arquivo `site-viaseg.zip` dentro do gerenciador e selecione **Extrair** (ou Descompactar).
+7. **Atenção ao destino:** a janela de extração preenche sozinha um nome de pasta. O destino tem que ser a própria `public_html`. Se os arquivos forem para uma subpasta (`site-viaseg`, `viaseg`), o site no ar não muda.
+8. Se perguntar sobre arquivos repetidos, escolha **Replace all**.
+9. Confira que `index.html`, `.htaccess` e `_next` estão soltos na `public_html` e que não ficou subpasta. Apague o zip.
+10. Peça a conferência do site no ar contra a pasta `out/`. Só depois disso grave no git e envie ao GitHub.
 
 ---
 
