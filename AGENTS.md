@@ -106,4 +106,8 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 - ⚠️ **`65956F` não é a SUSEP.** Esse número, presente nos links de cotação, é o código interno do corretor na Porto Seguro. Nunca publicá-lo como registro SUSEP.
 - Enquanto `EMPRESA.susep` estiver vazio, rodapé e páginas legais omitem o registro automaticamente.
 - Dados oficiais ficam centralizados em `src/lib/empresa.ts`. Rodapé e páginas legais leem de lá — não repetir esses dados soltos pelo código.
+- **Números do site são fatos, não marketing.** Cidades, clientes e seguradoras saem da
+  seção 10 do [PRD.md](PRD.md#10-números-institucionais) — 92 cidades no RJ, 1.000 clientes,
+  10 seguradoras. Nunca arredondar para cima nem reaproveitar número de briefing antigo
+  (o original pedia +1.800 cidades e +270 mil clientes; era falso e foi corrigido em 17/10/2026).
 - `ATUALIZADO_EM` é a data da **última mudança real do texto legal**. Não usar o ano de fundação nesse campo: as políticas citam LGPD, GA4 e Meta Pixel, então uma data antiga se contradiz sozinha. O tempo de atuação aparece em `EMPRESA.atuaDesde` e no rodapé.

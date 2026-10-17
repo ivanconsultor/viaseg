@@ -258,7 +258,7 @@ export default function Home() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
               <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6 leading-tight text-white">Uma corretora que entende você.</h2>
               <p className="text-slate-300 text-lg mb-8 leading-relaxed">
-                Nossa missão é mais do que vender seguros, é entregar tranquilidade. Com milhares de clientes satisfeitos em todo o Brasil, a ViaSeg construiu uma reputação baseada na confiança e na transparência.
+                Nossa missão é mais do que vender seguros, é entregar tranquilidade. Com mil clientes atendidos no Rio de Janeiro, a ViaSeg construiu uma reputação baseada na confiança e na transparência.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -267,8 +267,8 @@ export default function Home() {
                     <MapPin />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl text-white">+1.800</h4>
-                    <p className="text-slate-400 text-sm">Cidades Atendidas</p>
+                    <h4 className="font-bold text-xl text-white">92</h4>
+                    <p className="text-slate-400 text-sm">Cidades no RJ</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -276,7 +276,7 @@ export default function Home() {
                     <Users />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl text-white">+270 Mil</h4>
+                    <h4 className="font-bold text-xl text-white">1.000</h4>
                     <p className="text-slate-400 text-sm">Clientes Segurados</p>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function Home() {
                     <ShieldCheck />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl text-white">+50</h4>
+                    <h4 className="font-bold text-xl text-white">10</h4>
                     <p className="text-slate-400 text-sm">Seguradoras Parceiras</p>
                   </div>
                 </div>

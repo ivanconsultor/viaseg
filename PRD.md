@@ -108,3 +108,23 @@ Identificadores em [ARQUITETURA.md](ARQUITETURA.md#7-rastreamento).
 - Telefone/WhatsApp: (21) 97684-4444
 - E-mail: contato@viasegcorretora.com.br
 - Site: https://www.viasegcorretora.com.br
+
+## 10. Números institucionais
+
+Números publicados no site. **São os únicos autorizados.** Qualquer briefing,
+peça de campanha ou texto antigo que traga outros valores está errado —
+conferir aqui antes de escrever.
+
+| Número | Onde aparece | O que significa |
+|---|---|---|
+| 92 cidades no RJ | bloco de confiança da home | municípios do estado do Rio de Janeiro, a área de atuação |
+| 1.000 clientes segurados | bloco de confiança da home | carteira real, sem arredondar para cima |
+| 10 seguradoras parceiras | bloco de confiança da home | 9 já exibidas na esteira de logos + 1 a entrar |
+
+Corrigido em 17/10/2026. O site trazia "+1.800 cidades", "+270 mil clientes" e
+"9 seguradoras", herdados do briefing original — propaganda enganosa. A frase
+que falava em "milhares de clientes em todo o Brasil" passou a dizer "mil
+clientes atendidos no Rio de Janeiro".
+
+Regra: número no site é fato verificável, não estimativa de marketing. Mudou a
+carteira, muda aqui primeiro e depois no `src/app/page.tsx`.
