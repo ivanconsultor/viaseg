@@ -92,7 +92,12 @@ Este documento estabelece as regras de design, arquitetura e processos de public
 5. **Regras de deploy (03/10/2026) — não negociáveis:**
    - **Nunca subir partes do site.** O pacote é sempre o site inteiro (todo o `out/`), nunca só o arquivo que mudou — remendo avulso já deixou a `public_html` com cópias numeradas e o git atrás do ar.
    - "Zip completo" não quer dizer zip selado: pode extrair na Hostinger **ou** descompactar no PC e subir todos os arquivos. No segundo caso, mostrar itens ocultos no Explorer para o `.htaccess` ir junto.
-   - **Extrair direto na `public_html`.** A janela Extrair da Hostinger preenche sozinha um nome de pasta; se os arquivos caem numa subpasta (`site-viaseg`, `viaseg`), o site no ar não muda. Conferir o destino antes de confirmar e, depois, que não ficou subpasta. Usar **Replace all**.
+   - **Extrair direto na `public_html`.** O Gerenciador de Arquivos (File Browser) abre na raiz da hospedagem e a janela Extrair **exige** um nome de pasta: ela extrai sempre em "pasta atual + nome". Deixando o destino padrão (`/files/public_html/`), qualquer nome vira subpasta e o site no ar não muda (já aconteceu com `site-viaseg`, `viaseg`, `files/public_html`). Jeito certo, testado em 18/10/2026:
+     1. Selecionar o `site-viaseg.zip` dentro da `public_html` e clicar em **Extract**.
+     2. Na lista de destino, dar **duplo clique em `..`** até aparecer `Currently navigating on: /files/`.
+     3. Em **Choose folder name**, digitar `public_html`.
+     4. Marcar **Overwrite existing files** e clicar em **Extract**.
+     5. Conferir que a data do `index.html` na `public_html` mudou e que não surgiu subpasta.
    - **Conferir o site no ar contra o `out/`**, arquivo por arquivo, antes de dizer que está pronto.
    - **Commit e push para o GitHub só depois de testado no ar.** PC, GitHub e site ficam sempre iguais.
    - `public/capi-config.php` nunca vai para o git.
