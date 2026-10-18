@@ -90,7 +90,8 @@ Este documento estabelece as regras de design, arquitetura e processos de public
    - Ele contém o `capi-config.php` (token). `CA06 web` está dentro do repositório externo `Documents/Claude`: **nunca** fazer `git add` desse zip lá.
 
 5. **Regras de deploy (03/10/2026) — não negociáveis:**
-   - **Nunca subir partes do site.** Nada de arquivo avulso na `public_html`: só o zip completo.
+   - **Nunca subir partes do site.** O pacote é sempre o site inteiro (todo o `out/`), nunca só o arquivo que mudou — remendo avulso já deixou a `public_html` com cópias numeradas e o git atrás do ar.
+   - "Zip completo" não quer dizer zip selado: pode extrair na Hostinger **ou** descompactar no PC e subir todos os arquivos. No segundo caso, mostrar itens ocultos no Explorer para o `.htaccess` ir junto.
    - **Extrair direto na `public_html`.** A janela Extrair da Hostinger preenche sozinha um nome de pasta; se os arquivos caem numa subpasta (`site-viaseg`, `viaseg`), o site no ar não muda. Conferir o destino antes de confirmar e, depois, que não ficou subpasta. Usar **Replace all**.
    - **Conferir o site no ar contra o `out/`**, arquivo por arquivo, antes de dizer que está pronto.
    - **Commit e push para o GitHub só depois de testado no ar.** PC, GitHub e site ficam sempre iguais.
