@@ -117,14 +117,19 @@ conferir aqui antes de escrever.
 
 | Número | Onde aparece | O que significa |
 |---|---|---|
-| 92 cidades no RJ | bloco de confiança da home | municípios do estado do Rio de Janeiro, a área de atuação |
+| 92 cidades atendidas | bloco de confiança da home | municípios do estado do Rio de Janeiro, a área de atuação (o site não cita a região) |
 | 1.000 clientes segurados | bloco de confiança da home | carteira real, sem arredondar para cima |
 | 10 seguradoras parceiras | bloco de confiança da home | 9 já exibidas na esteira de logos + 1 a entrar |
 
 Corrigido em 17/10/2026. O site trazia "+1.800 cidades", "+270 mil clientes" e
 "9 seguradoras", herdados do briefing original — propaganda enganosa. A frase
 que falava em "milhares de clientes em todo o Brasil" passou a dizer "mil
-clientes atendidos no Rio de Janeiro".
+clientes atendidos".
+
+Ajustado em 18/10/2026: o site não segmenta por região. Nada de "no RJ" ou
+"no Rio de Janeiro" junto dos números — o rótulo é "Cidades Atendidas" e a
+frase é só "mil clientes atendidos". O endereço do escritório (seção 9)
+continua com a cidade, porque é dado de contato, não número de marketing.
 
 Regra: número no site é fato verificável, não estimativa de marketing. Mudou a
 carteira, muda aqui primeiro e depois no `src/app/page.tsx`.
